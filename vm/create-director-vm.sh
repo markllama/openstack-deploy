@@ -34,7 +34,7 @@ function generate_kickstart_file() {
            > ${data_dir}/vm-anaconda-ks.cfg
 }
 
-trap 'kill $(jobs -p)' EXIT INT HUP
+trap 'jobs -p | xargs kill' EXIT INT HUP
 
 generate_kickstart_file ${DATA_DIR} ${SECRETS_JSON}
 
