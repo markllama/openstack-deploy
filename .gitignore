@@ -1,0 +1,5 @@
+# Ignore emacs backup files
+*~
+
+# Ignore the user provided secrets file
+secrets.json

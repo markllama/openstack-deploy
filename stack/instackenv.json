@@ -1,0 +1,36 @@
+{
+  "nodes": [
+    {
+      "mac": [ "00:30:48:9F:C2:02" ],
+      "name": "node1",
+      "arch": "x86_64",
+      "pm_type": "ipmi",
+      "pm_user": "mark",
+      "pm_password": "wid,P0nt",
+      "pm_addr": "172.16.2.11",
+      "capabilities": "node:compute-0"
+    },
+
+    {
+      "mac": [ "00:25:90:6a:75:b4" ],
+      "name": "node2",
+      "arch": "x86_64",
+      "pm_type": "ipmi",
+      "pm_user": "mark",
+      "pm_password": "wid,P0nt",
+      "pm_addr": "172.16.2.12",
+      "capabilities": "node:compute-1"
+    },
+
+    {
+      "mac": [ "00:25:90:60:b6:14" ],
+      "name": "node3",
+      "arch": "x86_64",
+      "pm_type": "ipmi",
+      "pm_user": "mark",
+      "pm_password": "wid,P0nt",
+      "pm_addr": "172.16.2.13",
+      "capabilities": "node:controller-0"
+    }
+  ]
+}
