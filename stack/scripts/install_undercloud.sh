@@ -7,8 +7,14 @@ set -u # Exit for undefined variables
 # Credentials shouldn't be saved in a file on github
 # Source them locally to fill them in for the scripts
 #
-: ${SM_FILE=~/.rhel_credentials.sh}
-[ -r ${SM_FILE} ] && source ${SM_FILE}
+: ${SM_FILE=~/rhel_credentials.sh}
+if [ ! -r ${SM_FILE} ] ; then
+    echo "FATAL: Missing credentials file ${SM_FILE}"
+    echo "Required to install container images"
+    exit 2
+fi
+
+source ${SM_FILE}
 
 function main() {
 
