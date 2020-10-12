@@ -1,0 +1,13 @@
+# Environment file demonstrating how to pre-assign provisioning IPs on the
+# boot NIC to all node types.
+
+parameter_defaults:
+  ControllerIPs:
+    # Each controller will get an IP from the lists below, first controller, first IP
+    ctlplane:
+    - 172.16.3.51
+  ComputeIPs:
+    # Each compute will get an IP from the lists below, first compute, first IP
+    ctlplane:
+    - 172.16.3.61
+    - 172.16.3.62

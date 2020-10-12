@@ -1,0 +1,20 @@
+parameter_defaults:
+  # Cloud Name
+  CloudName: osp.lab.lamourine.org
+  
+  # Network Services
+  EC2MetadataIp: 172.16.3.3
+  DnsServers: [ "172.16.3.2", "192.168.1.1" ]
+  TimeZone: "UTC"
+  NtpServer: 172.16.3.2
+
+  # Host Assignment
+  ControllerSchedulerHints:
+    'capabilities:node': 'controller-%index%'
+  ComputeSchedulerHints:
+    'capabilities:node': 'compute-%index%'
+
+  HostnameMap:
+    lab-controller-0: controller-1
+    lab-compute-0: compute-1
+    lab-compute-1: compute-2
