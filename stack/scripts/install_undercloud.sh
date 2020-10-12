@@ -74,13 +74,12 @@ function import_container_images() {
     
     source ~/stackrc
     
-    mkdir -p ~/templates
     openstack overcloud container image prepare \
               --namespace=registry.access.redhat.com/rhosp13 \
               --push-destination=$(registry_ip):8787 \
               --prefix=openstack- \
               --tag-from-label {version}-{release} \
-              --output-env-file=/home/stack/templates/overcloud_images.yaml \
+              --output-env-file=/home/stack/overcloud_images.yaml \
               --output-images-file /home/stack/local_registry_image_list.yaml
 
     cat <<EOF >~/container_image_registry_login.yaml
