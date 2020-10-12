@@ -3,3 +3,4 @@
 
 # Ignore the user provided secrets file
 secrets.json
+rhel_credentials.sh
