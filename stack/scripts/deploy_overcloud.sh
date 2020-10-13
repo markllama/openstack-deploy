@@ -4,7 +4,7 @@
 #
 SSL_CA_TEMPLATE=inject-trust-anchor-hiera.yaml
 
-[ -f ~/ssl/${SSL_CA_TEMPLATE}] &&  cp ~/ssl/${SSL_CA_TEMPLATE} ~/templates
+[ -f ~/ssl/${SSL_CA_TEMPLATE} ] &&  cp ~/ssl/${SSL_CA_TEMPLATE} ~/templates
 
 # Generate RHEL subscription values
 #
@@ -25,7 +25,7 @@ EOF
 }
 
 if [ ! -r templates/rhel_registration.yaml ] ; then
-    write_rhel_crednetials
+    write_rhel_credentials
 fi
 
 source ~/stackrc
