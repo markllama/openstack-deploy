@@ -98,6 +98,10 @@ resources:
                 dns_servers: {get_param: DnsServers}
                 domain: {get_param: DnsSearchDomains}
                 use_dhcp: false
+                members:
+                - type: interface
+                  name: enp1s0f0
+                  primary: true
                 addresses:
                 - ip_netmask:
                     list_join:
@@ -114,6 +118,13 @@ resources:
                 - type: interface
                   name: nic1
                   primary: true
+
+              - type: ovs_bridge
+                name: br-int
+                use_dhcp: false
+                members:
+                - type: interface
+                  name: enp1s0f1
 
 outputs:
   OS::stack_id:
