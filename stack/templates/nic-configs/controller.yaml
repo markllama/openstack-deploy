@@ -122,6 +122,21 @@ resources:
                 members:
                 - type: interface
                   name: enp1s0f1
+                - type: vlan
+                  device: enp1s0f1
+                  mtu: 9000
+                  vlan_id: 40
+                  use_dhcp: false
+                - type: vlan
+                  device: enp1s0f1
+                  mtu: 9000
+                  vlan_id: 50
+                  use_dhcp: false
+                - type: vlan
+                  device: enp1s0f1
+                  mtu: 9000
+                  vlan_id: 60
+                  use_dhcp: false
               
 
 
