@@ -1,19 +1,23 @@
 #!/bin/bash
 #
+set -u # exit with error for undefined variables
+#
 # Prepare for and deploy an overcloud
 #
 SSL_CA_TEMPLATE=inject-trust-anchor-hiera.yaml
 
-[ -f ~/ssl/${SSL_CA_TEMPLATE} ] &&  cp ~/ssl/${SSL_CA_TEMPLATE} ~/templates
+#[ -f ~/ssl/${SSL_CA_TEMPLATE} ] &&  cp ~/ssl/${SSL_CA_TEMPLATE} ~/templates
 
 # Generate RHEL subscription values
 #
 function write_rhel_credentials() {
 
-    if [ ! -r source ~/rhel_credentials.sh ] ; then
+    if [ ! -r ~/rhel_credentials.sh ] ; then
         echo FATAL: no rhel credentials file
         exit 2
     fi
+
+    source ~/rhel_credentials.sh
     
     cat <<EOF >> ~/templates/rhel_registration.yaml
 # Generated before the start of deployment from ~stack/rhel_credentials.sh

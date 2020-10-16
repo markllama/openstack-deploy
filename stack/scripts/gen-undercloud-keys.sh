@@ -7,7 +7,10 @@ UNDERCLOUD_PUBLIC_IP=172.16.3.4
 UNDERCLOUD_ADMIN_IP=172.16.3.5
 
 SSLDIR=~stack/sslfiles
-mkdir -p ${SSLDIR}
+
+[ -d ${SSLDIR} ] && (echo "FATAL: SSLDIR exists: ${SSLDIR}" ; exit 2)
+
+mkdir ${SSLDIR}
 
 main() {
     write_undercloud_conf
