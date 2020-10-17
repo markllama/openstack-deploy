@@ -11,7 +11,7 @@ parameter_defaults:
     storage:
     - 172.18.0.51
     storage_mgmt:
-    -172.19.0.51
+    - 172.19.0.51
   ComputeIPs:
     # Each compute will get an IP from the lists below, first compute, first IP
     ctlplane:
