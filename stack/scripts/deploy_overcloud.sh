@@ -10,7 +10,7 @@ SSL_CA_TEMPLATE=inject-trust-anchor-hiera.yaml
 #
 function write_rhel_credentials() {
 
-    if [ ! -r source ~/rhel_credentials.sh ] ; then
+    if [ ! -r ~/rhel_credentials.sh ] ; then
         echo FATAL: no rhel credentials file
         exit 2
     fi
