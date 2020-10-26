@@ -22,9 +22,9 @@ function write_rhel_credentials() {
     cat <<EOF >> ~/templates/rhel_registration.yaml
 # Generated before the start of deployment from ~stack/rhel_credentials.sh
 parameter_defaults:
-  rhel_reg_user: \"${SM[USERNAME]}\"
-  rhel_reg_password: \"${SM[PASSWORD]}\"
-  rhel_reg_pool_id: \"${SM[POOLID]}\"
+  rhel_reg_user: "${SM[USERNAME]}"
+  rhel_reg_password: "${SM[PASSWORD]}"
+  rhel_reg_pool_id: "${SM[POOLID]}"
 EOF
 }
 
