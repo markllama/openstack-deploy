@@ -122,13 +122,13 @@ resources:
                 - type: interface
                   name: enp1s0f1
                   mtu: 9000
-                - type: vlan
-                  device: enp1s0f1
-                  mtu: 1500
-                  vlan_id: {get_param: InternalApiNetworkVlanID}
-#                  use_dhcp: false
-#                  addresses:
-#                  - ip_netmask: {get_param: InternalApiIpSubnet}
+              - type: vlan
+                device: enp1s0f1
+                mtu: 1500
+                vlan_id: {get_param: InternalApiNetworkVlanID}
+                use_dhcp: false
+                addresses:
+                - ip_netmask: {get_param: InternalApiIpSubnet}
 
 outputs:
   OS::stack_id:
