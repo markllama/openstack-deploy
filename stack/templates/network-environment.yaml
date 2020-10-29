@@ -17,15 +17,15 @@ parameter_defaults:
   PublicVirtualFixedIPs: [{ "ip_address": "10.0.0.5" }]
   NeutronExternalNetworkBridge: "''"
 
-  InternalApiNetworkVlanID: 10
+  InternalApiNetworkVlanID: 40
   InternalApiNetCidr: 172.17.0.0/24
   InternalApiAllocationPools: [{"start": "172.17.0.150", "end": "172.17.0.250"}]
 
-  StorageNetworkVlanID: 40
+  StorageNetworkVlanID: 50
   StorageNetCidr: 172.18.0.0/24
   StorageAllocationPools: [{"start": "172.18.0.150", "end": "172.18.0.250"}]
 
-  StorageMgmtNetworkVlanID: 30
+  StorageMgmtNetworkVlanID: 60
   StorageMgmtNetCidr: 172.19.0.0/24
   StorageMgmtAllocationPools: [{"start": "172.19.0.150", "end": "172.19.0.250"}]
 
