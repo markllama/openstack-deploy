@@ -136,13 +136,13 @@ resources:
                 use_dhcp: false
                 addresses:
                 - ip_netmask: {get_param: StorageIpSubnet}
-              - type: vlan
-                device: enp1s0f1
-                mtu: 9000
-                vlan_id: {get_param: StorageMgmtNetworkVlanID}
-                use_dhcp: false
-                addresses:
-                - ip_netmask: {get_param: StorageMgmtIpSubnet}
+#              - type: vlan
+#                device: enp1s0f1
+#                mtu: 9000
+#                vlan_id: {get_param: StorageMgmtNetworkVlanID}
+#                use_dhcp: false
+#                addresses:
+#                - ip_netmask: {get_param: StorageMgmtIpSubnet}
 
 outputs:
   OS::stack_id:
