@@ -35,4 +35,3 @@ parameter_defaults:
     storage_mgmt:
     - 172.19.0.61
     - 172.19.0.62
-g
