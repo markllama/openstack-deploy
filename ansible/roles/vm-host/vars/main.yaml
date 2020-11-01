@@ -3,3 +3,8 @@ serial_port_number: 0
 serial_port_name: ttyS0
 grub_config_file: /etc/default/grub
 grub_boot_file: /boot/grub2/grub.cfg
+network_bridges:
+  - name: ipmi
+    device: eno3
+  - name: ctlplane
+    device: eno49

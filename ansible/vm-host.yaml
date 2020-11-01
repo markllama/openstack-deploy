@@ -2,3 +2,4 @@
 - hosts: localhost
   roles:
     - role: vm-host
+  become: true

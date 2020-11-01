@@ -46,21 +46,138 @@
     serial_substring: 'console=tty0 console={{ serial_port_name }},115200'
   notify: rebuild grub config
 
+- name: install tools
+  yum:
+    name:
+      - tmux 
+      - nmap
+      - traceroute
+      - bind-utils
+      - openldap-clients
+      - tcpdump
+      - strace
+    state: present
 
-#- name: register system with software repos
+- name: install libvirt
+  yum:
+    name:
+      - libvirt-client
+      - libvirt-daemon
+      - qemu-kvm
+      - libvirt-daemon-driver-qemu
+      - libvirt-daemon-kvm
+      - virt-install
+      - bridge-utils
+      - rsync
+      - virt-viewer
+      - python-lxml # used by community.libvirt module
+    state: present
 
-#- name: remove network manager
-
-#- name: install tools
-
-#- name: install libvirt
+- name: Enable and start libvirtd
+  service:
+    name: libvirtd
+    state: started
+    enabled: true
 
 #- name: initialize libvirt default pool
+- name: create libvirt default pool
+  community.libvirt.virt_pool:
+    name: default
+    state: active
+    autostart: yes
+    xml: |
+      <pool type='dir'>
+       <name>default</name>
+       <target>
+         <path>/home/libvirt/images</path>
+         <permissions>
+           <mode>0755</mode>
+           <owner>0</owner>
+           <group>0</group>
+           <label>system_u:object_r:unlabeled_t:s0</label>
+         </permissions>
+        </target>
+      </pool>
 
-#- name: initialize libvirt default net
+- name: create libvirt default net
+  community.libvirt.virt_net:
+    autostart: yes
+    name: default
+    state: active
+    xml: |
+      <network>
+        <name>default</name>
+        <uuid>9d391665-f52e-4379-94f6-98fc2881bde3</uuid>
+        <forward mode='nat'>
+          <nat>
+            <port start='1024' end='65535'/>
+          </nat>
+        </forward>
+        <bridge name='virbr0' stp='on' delay='0'/>
+        <mac address='52:54:00:a8:55:a1'/>
+        <ip address='192.168.122.1' netmask='255.255.255.0'>
+          <dhcp>
+            <range start='192.168.122.2' end='192.168.122.254'/>
+          </dhcp>
+        </ip>
+      </network>
 
 #- name: enable IP forwarding
+- name: enable IP forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    state: present
+    sysctl_set: yes
+    reload: yes
+    
+#- name: register system with software repos
+- name: disable network manager
+  service:
+    name: NetworkManager
+    state: stopped
+    enabled: false
+  ignore_errors: yes
 
-#- name: create bridges
-#        ipmi: eno3
-#        ctlplane: eno49
+- name: remove network manager
+  yum:
+    name: NetworkManager
+    state: absent
+
+- name: create network bridge
+  copy:
+    dest: /etc/sysconfig/network-scripts/ifcfg-br-{{ item.name }}
+    owner: root
+    group: root
+    mode: 644
+    content: |
+      DEVICE=br-{{ item.name }}
+      NAME=br-{{ item.name }}
+      ONBOOT=yes
+      HOTPLUG=no
+      NM_CONTROLLED=no
+      PEERDNS=no
+      TYPE=Bridge
+      MTU=1500
+      BOOTPROTO=static
+    backup: yes
+  with_items: "{{ network_bridges }}"
+
+- name: configure interface to bridge
+  copy:
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ item.device }}
+    owner: root
+    group: root
+    mode: 644
+    content: |      
+      DEVICE={{ item.device }}
+      NAME={{ item.device }}
+      TYPE=Ethernet
+      BRIDGE=br-{{ item.name }}
+      ONBOOT=yes
+      BOOTPROTO=none
+      HOTPLUG=no
+      NM_CONTROLLED=no
+      MTU=1500
+    backup: yes
+  with_items: "{{ network_bridges }}"
