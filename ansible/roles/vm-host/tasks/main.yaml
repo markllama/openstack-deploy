@@ -1,0 +1,66 @@
+---
+- name: enable serial login
+  file:
+    path: /etc/systemd/system/getty.target.wants/serial-getty@{{ serial_port_name }}.service  
+    src: /usr/lib/systemd/system/serial-getty@.service
+    owner: root
+    group: root
+    state: link
+
+- name: start serial login
+  service:
+    name: serial-getty@{{ serial_port_name }}.service
+    state: started
+    enabled: true
+
+- name: enable grub submenu
+  lineinfile:
+    path: "{{ grub_config_file }}"
+    state: present
+    line: "GRUB_DISABLE_SUBMENU=false"
+    regexp: "^GRUB_DISABLE_SUBMENU="
+  notify: rebuild grub config
+
+- name: enable grub recovery
+  lineinfile:
+    path: "{{ grub_config_file }}"
+    state: present
+    line: "GRUB_DISABLE_RECOVERY=false"
+    regexp: "^GRUB_DISABLE_RECOVERY="
+  notify: rebuild grub config
+
+- name: add serial to grub terminal output
+  lineinfile:
+    path: "{{ grub_config_file }}"
+    state: present
+    line: 'GRUB_TERMINAL_OUTPUT="console serial"'
+    regexp: '^GRUB_TERMINAL_OUTPUT='
+  notify: rebuild grub config
+
+- name: replace rhgb quiet with serial port config
+  replace:
+    path: '{{ grub_config_file }}'
+    regexp: "^(GRUB_CMDLINE_LINUX=\".+)( rhgb quiet)\"$"
+    replace: '\1 {{ serial_substring }}"'
+  vars:
+    serial_substring: 'console=tty0 console={{ serial_port_name }},115200'
+  notify: rebuild grub config
+
+
+#- name: register system with software repos
+
+#- name: remove network manager
+
+#- name: install tools
+
+#- name: install libvirt
+
+#- name: initialize libvirt default pool
+
+#- name: initialize libvirt default net
+
+#- name: enable IP forwarding
+
+#- name: create bridges
+#        ipmi: eno3
+#        ctlplane: eno49
