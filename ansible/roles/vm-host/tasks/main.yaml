@@ -151,14 +151,11 @@
     group: root
     mode: 644
     content: |
-      DEVICE=br-{{ item.name }}
       NAME=br-{{ item.name }}
-      ONBOOT=yes
-      HOTPLUG=no
-      PEERDNS=no
+      DEVICE=br-{{ item.name }}
       TYPE=Bridge
-      MTU=1500
       BOOTPROTO=static
+      ONBOOT=yes
     backup: yes
   with_items: "{{ network_bridges }}"
 
@@ -169,13 +166,11 @@
     group: root
     mode: 644
     content: |      
-      DEVICE={{ item.device }}
       NAME={{ item.device }}
+      DEVICE={{ item.device }}
       TYPE=Ethernet
-      BRIDGE=br-{{ item.name }}
-      ONBOOT=yes
       BOOTPROTO=none
-      HOTPLUG=no
-      MTU=1500
+      ONBOOT=yes
+      BRIDGE=br-{{ item.name }}
     backup: yes
   with_items: "{{ network_bridges }}"
