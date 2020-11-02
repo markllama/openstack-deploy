@@ -132,17 +132,17 @@
     reload: yes
     
 #- name: register system with software repos
-- name: disable network manager
-  service:
-    name: NetworkManager
-    state: stopped
-    enabled: false
-  ignore_errors: yes
+# - name: disable network manager
+#   service:
+#     name: NetworkManager
+#     state: stopped
+#     enabled: false
+#   ignore_errors: yes
 
-- name: remove network manager
-  yum:
-    name: NetworkManager
-    state: absent
+# - name: remove network manager
+#   yum:
+#     name: NetworkManager
+#     state: absent
 
 - name: create network bridge
   copy:
@@ -155,7 +155,6 @@
       NAME=br-{{ item.name }}
       ONBOOT=yes
       HOTPLUG=no
-      NM_CONTROLLED=no
       PEERDNS=no
       TYPE=Bridge
       MTU=1500
@@ -177,7 +176,6 @@
       ONBOOT=yes
       BOOTPROTO=none
       HOTPLUG=no
-      NM_CONTROLLED=no
       MTU=1500
     backup: yes
   with_items: "{{ network_bridges }}"

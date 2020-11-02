@@ -5,6 +5,6 @@ grub_config_file: /etc/default/grub
 grub_boot_file: /boot/grub2/grub.cfg
 network_bridges:
   - name: ipmi
-    device: eno3
+    device: rt2p2
   - name: ctlplane
     device: eno49
