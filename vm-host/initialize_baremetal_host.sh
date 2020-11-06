@@ -32,8 +32,10 @@ function main() {
     initialize_libvirt_default_pool
     initialize_libvirt_default_net
     enable_ip_forwarding
-    create_bridge ipmi eno3
-    create_bridge ctlplane eno49
+    create_bridge ext eno1
+    create_bridge ipmi rt2p2
+    create_bridge prov rt1p2
+    create_bridge data rt2p1
 }
 
 
