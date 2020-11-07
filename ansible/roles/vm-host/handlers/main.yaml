@@ -1,4 +1,4 @@
 - name: rebuild grub config
   shell:
     cmd: grub2-mkconfig -o {{ grub_boot_file }}
-    when: grub_config_file == "/etc/default/grub"
+  when: grub_config_file == "/etc/default/grub"

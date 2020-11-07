@@ -36,6 +36,14 @@
     regexp: '^GRUB_TERMINAL_OUTPUT='
   notify: rebuild grub config
 
+- name: add grub serial command line
+  lineinfile:
+    path: "{{ grub_config_file }}"
+    state: present
+    line: 'GRUB_SERIAL_COMMAND="serial --speed=115200'
+    regexp: '^GRUB_SERIAL_COMMAND='
+  notify: rebuild grub config
+
 - name: replace rhgb quiet with serial port config
   replace:
     path: '{{ grub_config_file }}'
