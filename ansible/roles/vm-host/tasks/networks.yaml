@@ -18,7 +18,7 @@
     line: DOMAINS=lamourine.org
   notify: restart resolved
     
-Add the external bridge 
+# Add the external bridge 
 - name: ext bridge
   community.general.nmcli:
     conn_name: br-ext
