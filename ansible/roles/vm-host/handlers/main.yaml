@@ -2,3 +2,8 @@
   shell:
     cmd: grub2-mkconfig -o {{ grub_boot_file }}
   when: grub_config_file == "/etc/default/grub"
+
+- name: restart resolved
+  service:
+    name: systemd-resolved
+    state: restarted

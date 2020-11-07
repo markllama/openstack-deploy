@@ -2,27 +2,43 @@
 # Network interfaces and bridges
 # ============================================================================
 
-# Add the external bridge 
-# - name: ext bridge
-#   community.general.nmcli:
-#     conn_name: br-ext
-#     ifname: br-ext
-#     type: bridge
-#     autoconnect: yes
-#     ip4: 192.168.1.100/24
-#     gw4: 192.168.1.1
-#     dns4: 192.168.1.1
-#     dns4_search: lamourine.org
-#     state: present
+- name: Add resolver to global dns
+  lineinfile:
+    path: /etc/systemd/resolved.conf
+    insertafter: "^[Resolve]"
+    regexp: "^#?DNS="
+    line: DNS=192.168.1.1
+  notify: restart resolved
+  
+- name: Add search domains to global dns
+  lineinfile:
+    path: /etc/systemd/resolved.conf
+    insertafter: "^[Resolve]"
+    regexp: "^#?Domains="
+    line: DOMAINS=lamourine.org
+  notify: restart resolved
+    
+Add the external bridge 
+- name: ext bridge
+  community.general.nmcli:
+    conn_name: br-ext
+    ifname: br-ext
+    type: bridge
+    autoconnect: yes
+    ip4: 192.168.1.100/24
+    gw4: 192.168.1.1
+    dns4: 192.168.1.1
+    dns4_search: lamourine.org
+    state: present
 
-# - name: ext bridge-slave ("{{ ext_interface }}")
-#   community.general.nmcli:
-#     conn_name: "{{ ext_interface }}"
-#     ifname: "{{ ext_interface }}"
-#     type: bridge-slave
-#     master: br-ext
-#     autoconnect: yes
-#     state: present
+- name: ext bridge-slave ("{{ ext_interface }}")
+  community.general.nmcli:
+    conn_name: "{{ ext_interface }}"
+    ifname: "{{ ext_interface }}"
+    type: bridge-slave
+    master: br-ext
+    autoconnect: yes
+    state: present
 
 # Add the IPMI network for control of hardware
 - name: ipmi bridge
