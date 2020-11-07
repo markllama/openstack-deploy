@@ -4,7 +4,9 @@ serial_port_name: ttyS0
 grub_config_file: /etc/default/grub
 grub_boot_file: /boot/grub2/grub.cfg
 
+libvirt_image_dir: /home/libvirt/images
+
 ext_interface: eno1
-ipmi_interface: rt2p2
-prov_interface: rt1p2
-data_interface: rt2p1
+ipmi_interface: ens1
+prov_interface: eth1
+data_interface: eth2

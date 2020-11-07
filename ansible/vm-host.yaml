@@ -1,4 +1,8 @@
 ---
+# The vm-host role requires several community modules from ansible-galaxy
+# ansible-galaxy collection install community.libvirt
+# ansible-galaxy collection install community.general
+#
 - hosts: localhost
   roles:
     - role: vm-host

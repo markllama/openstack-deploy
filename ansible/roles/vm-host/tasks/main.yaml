@@ -79,17 +79,24 @@
     state: started
     enabled: true
 
+- name: create libvirt default pool directory
+  file:
+    path: "{{ libvirt_image_dir }}"
+    owner: root
+    group: root
+    mode: 755
+    state: directory
+
 #- name: initialize libvirt default pool
-- name: create libvirt default pool
+- name: define libvirt default pool
   community.libvirt.virt_pool:
     name: default
-    state: active
-    autostart: yes
+    command: define
     xml: |
       <pool type='dir'>
        <name>default</name>
        <target>
-         <path>/home/libvirt/images</path>
+         <path>{{ libvirt_image_dir }}</path>
          <permissions>
            <mode>0755</mode>
            <owner>0</owner>
@@ -99,11 +106,26 @@
         </target>
       </pool>
 
-- name: create libvirt default net
-  community.libvirt.virt_net:
-    autostart: yes
+#- name: build libvirt default pool
+#  community.libvirt.virt_pool:
+#    name: default
+#    command: build
+
+#- name: create libvirt default pool
+#  community.libvirt.virt_pool:
+#    name: default
+#    command: create
+
+- name: create libvirt default pool
+  community.libvirt.virt_pool:
     name: default
     state: active
+    autostart: yes
+
+- name: define libvirt default net
+  community.libvirt.virt_net:
+    name: default
+    command: define
     xml: |
       <network>
         <name>default</name>
@@ -122,6 +144,12 @@
         </ip>
       </network>
 
+- name: start libvirt default net
+  community.libvirt.virt_net:
+    name: default
+    state: active
+    autostart: yes
+
 #- name: enable IP forwarding
 - name: enable IP forwarding
   sysctl:
@@ -136,26 +164,26 @@
 # ============================================================================
 
 # Add the external bridge 
-- name: ext bridge
-  community.general.nmcli:
-    conn_name: br-ext
-    ifname: br-ext
-    type: bridge
-    autoconnect: yes
-    ip4: 192.168.1.100/24
-    gw4: 192.168.1.1
-    dns4: 192.168.1.1
-    dns4_search: lamourine.org
-    state: present
+# - name: ext bridge
+#   community.general.nmcli:
+#     conn_name: br-ext
+#     ifname: br-ext
+#     type: bridge
+#     autoconnect: yes
+#     ip4: 192.168.1.100/24
+#     gw4: 192.168.1.1
+#     dns4: 192.168.1.1
+#     dns4_search: lamourine.org
+#     state: present
 
-- name: ext bridge-slave ("{{ ext_interface }}")
-  community.general.nmcli:
-    conn_name: "{{ ext_interface }}"
-    ifname: "{{ ext_interface }}"
-    type: bridge-slave
-    master: br-ext
-    autoconnect: yes
-    state: present
+# - name: ext bridge-slave ("{{ ext_interface }}")
+#   community.general.nmcli:
+#     conn_name: "{{ ext_interface }}"
+#     ifname: "{{ ext_interface }}"
+#     type: bridge-slave
+#     master: br-ext
+#     autoconnect: yes
+#     state: present
 
 # Add the IPMI network for control of hardware
 - name: ipmi bridge
