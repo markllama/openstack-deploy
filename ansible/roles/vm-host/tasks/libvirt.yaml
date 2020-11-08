@@ -7,10 +7,11 @@
       - libvirt-daemon-driver-qemu
       - libvirt-daemon-kvm
       - virt-install
-      - bridge-utils
+        #      - bridge-utils
       - rsync
       - virt-viewer
-      - python-lxml # used by community.libvirt module
+        #      - python-lxml # used by community.libvirt module
+      - python3-lxml # used by community.libvirt module
     state: present
 
 - name: Enable and start libvirtd
