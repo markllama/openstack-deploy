@@ -40,7 +40,7 @@
 #     autoconnect: yes
 #     state: present
 
-Add the IPMI network for control of hardware
+# Add the IPMI network for control of hardware
 - name: ipmi bridge
   community.general.nmcli:
     conn_name: br-ipmi
