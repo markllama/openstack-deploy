@@ -1,0 +1,8 @@
+DEVICE={{ iface.device }}
+NAME="System {{ iface.device }}"
+TYPE=Ethernet
+ONBOOT=yes
+BRIDGE={{ iface.bridge.name }}
+BOOTPROTO=none
+IPV6INIT=no
+NM_CONTROLLED=no

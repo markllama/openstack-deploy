@@ -8,7 +8,31 @@ libvirt_image_dir: /home/libvirt/images
 
 
 ext_interface: eno1   # 74:46:a0:b4:eb:87  enp0s25
-data_interface: ens1  # 00:e0:4c:87:00:57  enp8s0 data
+data_interface: eth1  # 00:e0:4c:87:00:57  enp8s0 data
 #               ens2  # 00:e0:4c:67:92:36  enp4s0
-prov_interface: eth1  # 00:e0:4c:67:92:37  enp5s0 prov
-ipmi_interface: eth3  # 00:e0:4c:87:00:58  enp9s0 ipmi
+prov_interface: eth2  # 00:e0:4c:67:92:37  enp5s0 prov
+ipmi_interface: ens1  # 00:e0:4c:87:00:58  enp9s0 ipmi
+
+interfaces:
+  - device: eno1
+    bridge: ext
+    ipv4:
+      address: 192.168.1.100
+      prefix: 24
+      gateway: 192.168.1.1
+      nameserver: 192.168.1.1
+  - device: ens1
+    bridge: ipmi
+    ipv4:
+      address: 172.16.2.2
+      prefix: 24
+  - device: eth2
+    bridge: prov
+    ipv4:
+      address: 172.16.3.2
+      prefix: 24
+  - device: eth1
+    bridge: data
+    ipv4:
+      address: 172.16.4.2
+      prefix: 24

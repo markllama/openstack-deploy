@@ -1,0 +1,15 @@
+DEVICE=br-{{ iface.bridge }}
+NAME="Bridge {{ iface.bridge }} ({{ iface.device }})"
+TYPE=Bridge
+ONBOOT=yes
+BOOTPROTO=static
+IPADDR={{ iface.ipv4.address }}
+PREFIX={{ iface.ipv4.prefix }}
+{% if iface.ipv4.gateway is defined %}
+GATEWAY={{ iface.ipv4.gateway }}
+{% endif %}
+{% if iface.ipv4.nameserver is defined %}
+DNS1={{ iface.ipv4.nameserver }}
+{% endif %}
+IPV6INIT=no
+NM_CONTROLLED=no
