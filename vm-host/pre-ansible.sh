@@ -8,6 +8,9 @@ sudo tee /etc/sudoers.d/mark <<EOF
 mark ALL=(ALL) NOPASSWD: ALL
 EOF
 
+if [ -f /etc/centos-release ] ; then
+    sudo yum -y install epel-release
+fi
 sudo yum -y install git ansible
 
 ansible-galaxy collection install community.libvirt
