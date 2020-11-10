@@ -1,4 +1,4 @@
-
+- name: install libvirt
   yum:
     name:
       - libvirt-client
@@ -7,7 +7,7 @@
       - libvirt-daemon-driver-qemu
       - libvirt-daemon-kvm
       - virt-install
-#      - bridge-utils # Not on CentOS8/EPEL
+#      - bridge-utils
       - rsync
       - virt-viewer
 #      - python-lxml # used by community.libvirt module
