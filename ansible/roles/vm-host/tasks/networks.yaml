@@ -17,82 +17,31 @@
     regexp: "^#?Domains="
     line: Domains=lamourine.org
   notify: restart resolved
+
+- name: Add bridge for IPMI
+  command:
+    cmd: nmcli con add type bridge ifname br-ipmi con-name br-ipmi
+
+- name: Add bridge slave for IPMI
+  command:
+    cmd: nmcli con add type bridge-slave ifname eth3 master br-ipmi
     
-# Add the external bridge 
-# - name: ext bridge
-#   community.general.nmcli:
-#     conn_name: br-ext
-#     ifname: br-ext
-#     type: bridge
-#     autoconnect: yes
-#     ip4: 192.168.1.100/24
-#     gw4: 192.168.1.1
-#     dns4: 192.168.1.1
-#     dns4_search: lamourine.org
-#     state: present
+- name: Disable STP on IPMI bridge
+  command:
+    cmd: sudo nmcli con modify br-ipmi bridge.stp no
 
-# - name: ext bridge-slave ("{{ ext_interface }}")
-#   community.general.nmcli:
-#     conn_name: "{{ ext_interface }}"
-#     ifname: "{{ ext_interface }}"
-#     type: bridge-slave
-#     master: br-ext
-#     autoconnect: yes
-#     state: present
+- name: Set IP address on br-ipmi
+  command:
+    cmd: nmcli connection modify br-ipmi ipv4.addresses '172.16.2.2/24'
 
-# Add the IPMI network for control of hardware
-- name: ipmi bridge
-  community.general.nmcli:
-    conn_name: br-ipmi
-    ifname: br-ipmi
-    type: bridge
-    autoconnect: yes
-    ip4: 172.16.2.2/24
-    state: absent
+- name: Set IP start method
+  command:
+    cmd: nmcli connection modify br-ipmi ipv4.method manual
+    
+- name: Bring up the IPMI bridge interface
+  command:
+    cmd: sudo nmcli con up br-ipmi
 
-- name: ipmi bridge-slave ("{{ ipmi_interface }}")
-  community.general.nmcli:
-    conn_name: "{{ ipmi_interface }}"
-    ifname: "{{ ipmi_interface }}"
-    type: bridge-slave
-    master: br-ipmi
-    autoconnect: yes
-    state: absent
-
-# Add the Prov network for control plane and provisioning
-- name: prov bridge
-  community.general.nmcli:
-    conn_name: br-prov
-    ifname: br-prov
-    type: bridge
-    autoconnect: yes
-    ip4: 172.16.3.2/24
-    state: absent
-
-- name: prov bridge-slave ("{{ prov_interface }}")
-  community.general.nmcli:
-    conn_name: "{{ prov_interface }}"
-    ifname: "{{ prov_interface }}"
-    type: bridge-slave
-    master: br-prov
-    autoconnect: yes
-    state: absent
-
-# Add the data network for storage and tenant traffic
-- name: data bridge
-  community.general.nmcli:
-    conn_name: br-data
-    ifname: br-data
-    type: bridge
-    autoconnect: yes
-    ip4: 172.16.4.2/24
-    state: absent
-
-- name: data bridge-slave ("{{ data_interface }}")
-  community.general.nmcli:
-    conn_name: "{{ data_interface }}"
-    ifname: "{{ data_interface }}"
-    type: bridge-slave
-    master: br-data
-    autoconnect: yes
-    state: absent
+- name: Delete bridge slave connection
+  command:
+    cmd: nmcli connection delete eth3
