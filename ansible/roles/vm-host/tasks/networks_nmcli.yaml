@@ -86,7 +86,7 @@
      ip4: 172.16.4.2/24
      state: present
 
- - name: data bridge-slave ("{{ data_interface }}")
+- name: data bridge-slave ("{{ data_interface }}")
    community.general.nmcli:
      conn_name: "br-data-slave"
      ifname: "{{ data_interface }}"
