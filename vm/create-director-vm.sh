@@ -8,10 +8,11 @@
 : ${RHEL_VERSION=7.8}
 : ${KS_PORT=8080}
 : ${VM_NAME=osp-13}
+: ${PYTHON=python3}
 
 #sudo firewall-cmd --zone libvirt --add-port 8080/tcp
 
-PYTHON_MAJOR=$(python --version | cut -d' ' -f2 | cut -d. -f1)
+PYTHON_MAJOR=$(${PYTHON} --version | cut -d' ' -f2 | cut -d. -f1)
 
 function start_httpd() {
     local data_dir=$1
@@ -19,9 +20,9 @@ function start_httpd() {
     
     cd $data_dir ;
     if [ ${PYTHON_MAJOR} -eq 2 ] ; then
-        python -m SimpleHTTPServer ${KS_PORT} &
+        ${PYTHON} -m SimpleHTTPServer ${KS_PORT} &
     else
-        python -m http.server ${KS_PORT} &
+        ${PYTHON} -m http.server ${KS_PORT} &
     fi
     cd ${cwd}
 }
