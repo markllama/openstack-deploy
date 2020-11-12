@@ -79,21 +79,21 @@
 # # Add the data network for storage and tenant traffic
 - name: data bridge
   community.general.nmcli:
-     conn_name: br-data
-     ifname: br-data
-     type: bridge
-     autoconnect: yes
-     ip4: 172.16.4.2/24
-     state: present
+    conn_name: br-data
+    ifname: br-data
+    type: bridge
+    autoconnect: yes
+    ip4: 172.16.4.2/24
+    state: present
 
 - name: data bridge-slave ("{{ data_interface }}")
-   community.general.nmcli:
-     conn_name: "br-data-slave"
-     ifname: "{{ data_interface }}"
-     type: bridge-slave
-     master: br-data
-     autoconnect: yes
-     state: present
+  community.general.nmcli:
+    conn_name: "br-data-slave"
+    ifname: "{{ data_interface }}"
+    type: bridge-slave
+    master: br-data
+    autoconnect: yes
+    state: present
 
 # Remove the regular interface connection
 
