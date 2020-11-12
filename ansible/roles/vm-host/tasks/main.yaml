@@ -12,7 +12,7 @@
       - openldap-clients
       - tcpdump
       - strace
-      - python3
+      - python3-jinja2
     state: present
 
 # Install and configure libvirt, pools and networks
