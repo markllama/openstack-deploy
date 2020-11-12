@@ -15,6 +15,12 @@
       - python3-jinja2
     state: present
 
+- name: install pip tools
+  pip:
+    name: jinja2-cli
+    extra_args: --user
+    state: present
+
 # Install and configure libvirt, pools and networks
 - include: libvirt.yaml
 
