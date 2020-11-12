@@ -30,3 +30,9 @@
     name: stack
     generate_ssh_key: true
     state: present
+
+- name: enable sudo all no password for stack user
+  copy:
+    dest: /etc/sudoers.d/stack
+    content: |
+      stack ALL=(ALL) NOPASSWD: ALL
