@@ -14,8 +14,6 @@
 
 PYTHON_MAJOR=$(${PYTHON} --version | cut -d' ' -f2 | cut -d. -f1)
 
-pip3 install --user jinja2-cli
-
 function start_httpd() {
     local data_dir=$1
     local cwd=$(pwd)
