@@ -21,3 +21,12 @@
 # Network interfaces and bridges
 # ============================================================================
 - include: networks_nmcli.yaml
+
+# ============================================================================
+# Prepare stack user
+# ============================================================================
+- name: add stack user
+  user:
+    name: stack
+    generate_ssh_key: true
+    state: present
