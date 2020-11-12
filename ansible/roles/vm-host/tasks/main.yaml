@@ -12,6 +12,7 @@
       - openldap-clients
       - tcpdump
       - strace
+      - python3
     state: present
 
 # Install and configure libvirt, pools and networks
@@ -25,14 +26,14 @@
 # ============================================================================
 # Prepare stack user
 # ============================================================================
-- name: add stack user
-  user:
-    name: stack
-    generate_ssh_key: true
-    state: present
+#- name: add stack user
+#  user:
+#    name: stack
+#    generate_ssh_key: true
+#    state: present
 
-- name: enable sudo all no password for stack user
-  copy:
-    dest: /etc/sudoers.d/stack
-    content: |
-      stack ALL=(ALL) NOPASSWD: ALL
+#- name: enable sudo all no password for stack user
+#  copy:
+#    dest: /etc/sudoers.d/stack
+#    content: |
+#      stack ALL=(ALL) NOPASSWD: ALL
