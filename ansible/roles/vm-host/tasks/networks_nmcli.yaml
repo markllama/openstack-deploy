@@ -65,7 +65,7 @@
     type: bridge
     autoconnect: yes
     ip4: 172.16.3.2/24
-    state: absent
+    state: present
 
 - name: prov bridge-slave ("{{ prov_interface }}")
   community.general.nmcli:
@@ -74,7 +74,7 @@
     type: bridge-slave
     master: br-prov
     autoconnect: yes
-    state: absent
+    state: present
 
 # Remove the regular interface connection
 - name: prov remove ("{{ prov_interface }}")
