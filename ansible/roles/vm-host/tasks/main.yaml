@@ -28,18 +28,3 @@
 # Network interfaces and bridges
 # ============================================================================
 - include: networks_nmcli.yaml
-
-# ============================================================================
-# Prepare stack user
-# ============================================================================
-#- name: add stack user
-#  user:
-#    name: stack
-#    generate_ssh_key: true
-#    state: present
-
-#- name: enable sudo all no password for stack user
-#  copy:
-#    dest: /etc/sudoers.d/stack
-#    content: |
-#      stack ALL=(ALL) NOPASSWD: ALL
