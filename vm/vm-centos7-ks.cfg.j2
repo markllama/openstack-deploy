@@ -21,12 +21,13 @@ network  --bootproto=dhcp --device=eth3 --onboot=off --ipv6=auto
 network  --hostname=director.lab.lamourine.org
 
 # Root password
-rootpw --iscrypted $6$kh00/O9Rgue3zn0H$IM9cgz8Ke9FJVTAm5Jc4S4DqZl1ZJUC6afmL/UZ1xX/YDUO5gMDJ/BAWrtwaHkwK5pGnOjx/6g/jksL4HQ6cw/
+rootpw {{ vm.root.password }}
+
 # System services
 services --enabled="chronyd"
 # System timezone
 timezone Etc/UTC --isUtc
-user --groups=wheel --name=mark --password=$6$vgQ/.DAlVvfU0zOr$epROLmHdrz0k3VTJC76dAA.F8hmXAg5v22rOmKOyN6a9BkCrvfmd64CjGX7wT.csNpfVObV5nZN7BkOWm789X. --iscrypted --gecos="Mark Lamourine"
+user --groups=wheel --name=stack --password={{ vm.stack.password }} --gecos="Stack User"
 # System bootloader configuration
 bootloader --append=" crashkernel=auto" --location=mbr --boot-drive=vda
 autopart --type=lvm
