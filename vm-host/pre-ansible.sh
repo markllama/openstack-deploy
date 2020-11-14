@@ -15,3 +15,4 @@ sudo yum -y install git ansible
 
 ansible-galaxy collection install community.libvirt
 ansible-galaxy collection install community.general
+ansible-galaxy collection install containers.podman

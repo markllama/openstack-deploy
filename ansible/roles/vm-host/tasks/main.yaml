@@ -14,6 +14,7 @@
       - strace
       - python3-pip
       - python3-jinja2
+      - podman-docker
     state: present
 
 - name: install pip tools
@@ -22,10 +23,13 @@
     extra_args: --user
     state: present
 
-# Install and configure libvirt, pools and networks
-- include: libvirt.yaml
-
 # ============================================================================
 # Network interfaces and bridges
 # ============================================================================
 - include: networks_nmcli.yaml
+
+# Install and configure libvirt, pools and networks
+- include: libvirt.yaml
+
+# Configure DNS for the cluster
+- include: coredns.yaml
