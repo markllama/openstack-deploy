@@ -51,7 +51,7 @@ sudo virt-install \
      --disk size=100,sparse=no \
      --extra-args "console=ttyS0 ip=192.168.1.81::192.168.1.1:255.255.255.0:director.lab.lamourine.org:eth0:none ks=http://192.168.1.100:${KS_PORT}/vm-centos7-ks.cfg" \
      --os-type=linux \
-     --os-variant=centos7 \
+     --os-variant=centos7.0 \
      --location=/home/libvirt/images/CentOS-7-x86_64-DVD-2009.iso \
      --network bridge:br-ext \
      --network bridge:br-ipmi \
