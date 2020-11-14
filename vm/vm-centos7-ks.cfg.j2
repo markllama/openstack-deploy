@@ -1,0 +1,52 @@
+#version=DEVEL
+# System authorization information
+auth --enableshadow --passalgo=sha512
+# Use CDROM installation media
+cdrom
+# Use graphical install
+graphical
+# Run the Setup Agent on first boot
+firstboot --enable
+ignoredisk --only-use=vda
+# Keyboard layouts
+keyboard --vckeymap=us --xlayouts='us'
+# System language
+lang en_US.UTF-8
+
+# Network information
+network  --bootproto=static --device=eth0 --gateway=192.168.1.1 --ip=192.168.1.101 --nameserver=192.168.1.1 --netmask=255.255.255.0 --ipv6=auto --activate
+network  --bootproto=dhcp --device=eth1 --onboot=off --ipv6=auto
+network  --bootproto=dhcp --device=eth2 --onboot=off --ipv6=auto
+network  --bootproto=dhcp --device=eth3 --onboot=off --ipv6=auto
+network  --hostname=director.lab.lamourine.org
+
+# Root password
+rootpw --iscrypted $6$kh00/O9Rgue3zn0H$IM9cgz8Ke9FJVTAm5Jc4S4DqZl1ZJUC6afmL/UZ1xX/YDUO5gMDJ/BAWrtwaHkwK5pGnOjx/6g/jksL4HQ6cw/
+# System services
+services --enabled="chronyd"
+# System timezone
+timezone America/New_York --isUtc
+user --groups=wheel --name=mark --password=$6$vgQ/.DAlVvfU0zOr$epROLmHdrz0k3VTJC76dAA.F8hmXAg5v22rOmKOyN6a9BkCrvfmd64CjGX7wT.csNpfVObV5nZN7BkOWm789X. --iscrypted --gecos="Mark Lamourine"
+# System bootloader configuration
+bootloader --append=" crashkernel=auto" --location=mbr --boot-drive=vda
+autopart --type=lvm
+# Partition clearing information
+clearpart --none --initlabel
+
+%packages
+@^minimal
+@core
+chrony
+kexec-tools
+
+%end
+
+%addon com_redhat_kdump --enable --reserve-mb='auto'
+
+%end
+
+%anaconda
+pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
+pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+%end
