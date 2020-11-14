@@ -1,0 +1,45 @@
+---
+- name: create coredns config directory
+  file:
+    path: /opt/coredns
+    state: directory
+    owner: root
+    group: root
+    permissions: 775
+
+- name: create coredns config
+  copy:
+    dest: /opt/coredns/Corefile
+    state: present
+    owner: root
+    group: root
+    permissions: 644
+    content:
+      .:53 {
+        bind 172.16.3.2
+        forward . 192.168.1.1
+      }
+
+- name: open firewall for DNS: (port 53)
+  firewalld:
+    zone: public
+    service: dns
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: start coredns container
+  containers.podman.podman_container:
+    name: coredns
+    state: started
+    detach: yes
+    network: host
+    restart_policy: always
+    volumes:
+    - /opt/coredns/:/root
+    ports:
+    - 172.16.3.2:53:53
+    image: coredns/coredns
+    extra_args: --conf /root/Corefile
+
+
