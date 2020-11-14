@@ -8,13 +8,13 @@ set -u # Exit for undefined variables
 # Source them locally to fill them in for the scripts
 #
 : ${SM_FILE=~/rhel_credentials.sh}
-if [ ! -r ${SM_FILE} ] ; then
-    echo "FATAL: Missing credentials file ${SM_FILE}"
-    echo "Required to install container images"
-    exit 2
+if [ -r ${SM_FILE} ] && grep -q 'Red Hat' /etc/os-release ; then
+    #echo "FATAL: Missing credentials file ${SM_FILE}"
+    #echo "Required to install container images"
+    #exit 2
+    source ${SM_FILE}
 fi
 
-source ${SM_FILE}
 
 function main() {
 
