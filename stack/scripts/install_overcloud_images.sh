@@ -17,7 +17,3 @@ done
 for TAR in ${IMAGE_DIR}/*.tar ; do
     tar -xf ${TAR}
 done
-
-
-
-
