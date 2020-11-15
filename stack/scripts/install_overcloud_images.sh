@@ -12,8 +12,8 @@ DOWNLOAD_FILES=(
 mkdir -p ${IMAGE_DIR}
 
 for FILE in ${DOWNLOAD_FILES[@]} ; do
-    [ -f ${REPO_URL}${FILE} ] || curl -o ${IMAGE_DIR}/${FILE} ${REPO_URL}${FILE}
-    [ -f ${REPO_URL}${FILE}.mp3 ] || curl -o ${IMAGE_DIR}/${FILE}.md5 ${REPO_URL}${FILE}.md5
+    [ -f ${IMAGE_DIR}/${FILE} ] || curl -o ${IMAGE_DIR}/${FILE} ${REPO_URL}${FILE}
+    [ -f ${IMAGE_DIR}/${FILE}.mp3 ] || curl -o ${IMAGE_DIR}/${FILE}.md5 ${REPO_URL}${FILE}.md5
 done
 
 for TAR in ${IMAGE_DIR}/*.tar ; do
