@@ -4,20 +4,27 @@
 #
 set -u # Exit for undefined variables
 
+function is_redhat() {
+    [ -r /etc/redhat-release ] && grep -q 'Red Hat' /etc/redhat-release
+}
+
+
 # Credentials shouldn't be saved in a file on github
 # Source them locally to fill them in for the scripts
 #
-: ${SM_FILE=~/rhel_credentials.sh}
-if [ ! -r ${SM_FILE} ] ; then
-    echo "FATAL: Missing credentials file ${SM_FILE}"
-    echo "Required to install container images"
-    exit 2
-fi
-
-source ${SM_FILE}
+function load_rh_credentials() {
+    : ${SM_FILE=~/rhel_credentials.sh}
+    if [ ! -r ${SM_FILE} ] ; then
+        echo "FATAL: Missing credentials file ${SM_FILE}"
+        echo "Required to install container images"
+        #    exit 2
+     fi
+    source ${SM_FILE}
+}
 
 function main() {
 
+    
     # Install the undercloud
     # check for stackrc
     # check for stack installed
@@ -33,8 +40,16 @@ function main() {
               --dns-nameserver 192.168.1.1 \
               ctlplane-subnet
 
-    import_vm_images
-    import_container_images
+    # Load RH credentials for access to the RH repos for vm and container images
+    if is_redhat ; then
+        load_rh_credentials
+
+        import_rh_vm_images
+        import_rh_container_images
+    else
+        import_centos_vm_images
+        echo ADD CENTOS CODE
+    fi
 
     if [ -f ~/instackenv.json ] ; then
         prepare_overcloud_nodes
@@ -51,7 +66,7 @@ function registry_ip() {
         cut -d/ -f1
 }
 
-function import_vm_images() {
+function import_rh_vm_images() {
 
     # pull new image packages
     sudo yum -y install rhosp-director-images rhosp-director-images-ipa
@@ -70,7 +85,7 @@ function import_vm_images() {
     openstack overcloud image upload --image-path /home/stack/images/
 }
 
-function import_container_images() {
+function import_rh_container_images() {
     
     source ~/stackrc
     
@@ -101,6 +116,30 @@ EOF
     sudo openstack overcloud container image upload \
          --config-file  ~/local_registry_images.yaml \
          --verbose
+}
+
+function import_centos_vm_images() {
+    : ${REPO_URL:="https://images.rdoproject.org/centos7/queens/rdo_trunk/current-tripleo-rdo/"}
+    : ${IMAGE_DIR:=~/images}
+
+    DOWNLOAD_FILES=(
+        ironic-python-agent.tar
+        overcloud-full.tar
+        undercloud.qcow2
+    )
+
+    mkdir -p ${IMAGE_DIR}
+
+    for FILE in ${DOWNLOAD_FILES[@]} ; do
+        [ -f ${IMAGE_DIR}/${FILE} ] || curl -o ${IMAGE_DIR}/${FILE} ${REPO_URL}${FILE}
+        [ -f ${IMAGE_DIR}/${FILE}.mp3 ] || curl -o ${IMAGE_DIR}/${FILE}.md5 ${REPO_URL}${FILE}.md5
+    done
+
+    for TAR in ${IMAGE_DIR}/*.tar ; do
+        tar -C ${IMAGE_DIR} -xf ${TAR}
+    done
+
+    openstack overcloud image upload
 }
 
 function prepare_overcloud_nodes() {
