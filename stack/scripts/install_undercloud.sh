@@ -23,7 +23,6 @@ function load_rh_credentials() {
 }
 
 function main() {
-
     
     # Install the undercloud
     # check for stackrc
@@ -139,7 +138,7 @@ function import_centos_vm_images() {
         tar -C ${IMAGE_DIR} -xf ${TAR}
     done
 
-    openstack overcloud image upload
+    openstack overcloud image upload --image-path ${IMAGE_DIR}
 }
 
 function prepare_overcloud_nodes() {
