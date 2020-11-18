@@ -14,12 +14,14 @@ function is_redhat() {
 #
 function load_rh_credentials() {
     : ${SM_FILE=~/rhel_credentials.sh}
-    if [ ! -r ${SM_FILE} ] ; then
+    if [ -r ${SM_FILE} ] ; then
+        source ${SM_FILE}
+        echo "${SM[@]}"
+    else
         echo "FATAL: Missing credentials file ${SM_FILE}"
         echo "Required to install container images"
-        #    exit 2
-     fi
-    source ${SM_FILE}
+        exit 2
+    fi
 }
 
 function main() {
@@ -31,19 +33,21 @@ function main() {
         echo ERROR: no undercloud.conf is present. Exiting
         return 1
     fi
-    openstack undercloud install
+#    openstack undercloud install
 
     source ~/stackrc
-    openstack subnet set \
-              --dns-nameserver 172.16.3.3 \
-              --dns-nameserver 192.168.1.1 \
-              ctlplane-subnet
+#    openstack subnet set \
+#              --dns-nameserver 172.16.3.3 \
+#              --dns-nameserver 192.168.1.1 \
+#              ctlplane-subnet
 
     # Load RH credentials for access to the RH repos for vm and container images
     if is_redhat ; then
+        declare -A SM
         load_rh_credentials
-
-        import_rh_vm_images
+	echo "SM= ${!SM[@]} -- ${SM[@]}"
+        echo RH user: "${SM[USERNAME]}"
+#        import_rh_vm_images
         import_rh_container_images
     else
         import_centos_vm_images
