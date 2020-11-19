@@ -33,3 +33,23 @@
 
 # Configure DNS for the cluster
 - include: coredns.yaml
+
+- name: enable inbound NTP connections
+  firewalld:
+    zone: public
+    service: ntp
+    state: enabled
+
+- name: enable chrony listener on prov network
+  lineinfile: 
+    backup: true
+    insertafter: "^# Allow NTP client access from local network."
+    state: present
+    line: "allow 172.16.3.0/24"
+    path: /etc/chrony.conf
+ 
+- name: start chrony service
+  service:
+    name: chronyd
+    state: started
+    enabled: yes

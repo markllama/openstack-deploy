@@ -141,6 +141,12 @@ function import_centos_vm_images() {
     openstack overcloud image upload --image-path ${IMAGE_DIR}
 }
 
+function import_centos_container_images() {
+    sudo yum install https://trunk.rdoproject.org/centos7/current/python2-tripleo-repos-0.0.1-0.20200409224957.8bac392.el7.noarch.rpm
+
+    sudo -E tripleo-repos -b queens current
+}
+
 function prepare_overcloud_nodes() {
 
     if [ ! -f ~/instackenv.json ] ; then
