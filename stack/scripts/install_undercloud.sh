@@ -36,18 +36,18 @@ function main() {
 #    openstack undercloud install
 
     source ~/stackrc
-#    openstack subnet set \
-#              --dns-nameserver 172.16.3.3 \
-#              --dns-nameserver 192.168.1.1 \
-#              ctlplane-subnet
+    openstack subnet set \
+              --dns-nameserver 172.16.3.3 \
+              --dns-nameserver 192.168.1.1 \
+              ctlplane-subnet
 
     # Load RH credentials for access to the RH repos for vm and container images
     if is_redhat ; then
         declare -A SM
         load_rh_credentials
-	echo "SM= ${!SM[@]} -- ${SM[@]}"
+	      echo "SM= ${!SM[@]} -- ${SM[@]}"
         echo RH user: "${SM[USERNAME]}"
-#        import_rh_vm_images
+        import_rh_vm_images
         import_rh_container_images
     else
         import_centos_vm_images
