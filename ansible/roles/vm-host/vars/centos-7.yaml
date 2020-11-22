@@ -1,0 +1,11 @@
+install_tools:
+  - tmux 
+  - nmap
+  - traceroute
+  - bind-utils
+  - openldap-clients
+  - tcpdump
+  - strace
+  - python-pip
+  - python-jinja2
+  - podman-docker

@@ -1,20 +1,17 @@
 ---
+
+- name: gather OS specific variables
+  include_vars: {{ item }}
+  with_first_found:
+    - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yaml"
+    - "{{ ansible_distribution }}.yaml"
+  
 # Enable the serial port console and login
 - include: serial_port_console.yaml
   
 - name: install tools
   yum:
-    name:
-      - tmux 
-      - nmap
-      - traceroute
-      - bind-utils
-      - openldap-clients
-      - tcpdump
-      - strace
-      - python3-pip
-      - python3-jinja2
-      - podman-docker
+    name: {{ install_tools }}
     state: present
 
 - name: install pip tools
