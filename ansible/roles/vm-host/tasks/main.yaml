@@ -1,7 +1,7 @@
 ---
 
 - name: gather OS specific variables
-  include_vars: {{ item }}
+  include_vars: "{{ item }}"
   with_first_found:
     - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yaml"
     - "{{ ansible_distribution }}.yaml"
@@ -11,7 +11,7 @@
   
 - name: install tools
   yum:
-    name: {{ install_tools }}
+    name: "{{ install_tools }}"
     state: present
 
 - name: install pip tools
@@ -23,30 +23,30 @@
 # ============================================================================
 # Network interfaces and bridges
 # ============================================================================
-- include: networks_nmcli.yaml
+#- include: networks_nmcli.yaml
 
 # Install and configure libvirt, pools and networks
-- include: libvirt.yaml
+#- include: libvirt.yaml
 
 # Configure DNS for the cluster
-- include: coredns.yaml
+#- include: coredns.yaml
 
-- name: enable inbound NTP connections
-  firewalld:
-    zone: public
-    service: ntp
-    state: enabled
+#- name: enable inbound NTP connections
+#  firewalld:
+#    zone: public
+#    service: ntp
+#    state: enabled
 
-- name: enable chrony listener on prov network
-  lineinfile: 
-    backup: true
-    insertafter: "^# Allow NTP client access from local network."
-    state: present
-    line: "allow 172.16.3.0/24"
-    path: /etc/chrony.conf
+#- name: enable chrony listener on prov network
+#  lineinfile: 
+#    backup: true
+#    insertafter: "^# Allow NTP client access from local network."
+#    state: present
+#    line: "allow 172.16.3.0/24"
+#    path: /etc/chrony.conf
  
-- name: start chrony service
-  service:
-    name: chronyd
-    state: started
-    enabled: yes
+#- name: start chrony service
+#  service:
+#    name: chronyd
+#    state: started
+#    enabled: yes
