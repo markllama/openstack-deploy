@@ -1,13 +1,13 @@
 install_tools:
-  - tmux 
-  - nmap
-  - traceroute
   - bind-utils
   - bridge-utils
+  - chrony
   - openldap-clients
-  - tcpdump
-  - strace
+  - podman-docker
   - python-lxml
   - python-pip
   - python-jinja2
-  - podman-docker
+  - strace
+  - tcpdump
+  - tmux 
+  - traceroute
