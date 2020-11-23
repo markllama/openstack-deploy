@@ -30,14 +30,14 @@
     src: ifcfg-br-xxx.j2
     dest: "/etc/sysconfig/network-scripts/ifcfg-br-{{ item.key }}"
     backup: yes
-  with_dict: bridges
+  with_dict: "{{ bridges }}"
     
 - name: Add bridge to IPMI device
   template:
     src: ifcfg-xxx.j2
     dest: "ifcfg-{{ item.value.device }}"
     backup: yes
-  with_dict: bridges
+  with_dict: "{{ bridges }}"
     
 #   command:
 #     cmd: nmcli con add type bridge ifname br-ipmi con-name br-ipmi
