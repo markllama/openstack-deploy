@@ -11,5 +11,8 @@ GATEWAY={{ item.value.ipv4.gateway }}
 {% if item.value.ipv4.nameserver is defined %}
 DNS1={{ item.value.ipv4.nameserver }}
 {% endif %}
+{% if item.value.domain is defined %}
+DOMAIN={{ item.value.domain }}
+{% endif %}
 IPV6INIT=no
 NM_CONTROLLED=no
