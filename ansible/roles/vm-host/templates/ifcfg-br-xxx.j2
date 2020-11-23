@@ -1,5 +1,5 @@
 DEVICE=br-{{ item.key }}
-NAME="Bridge {{ item.key }} ({{ item.value.device }})"
+NAME="Bridge br-{{ item.key }} ({{ item.value.device }})"
 TYPE=Bridge
 ONBOOT=yes
 BOOTPROTO=static
