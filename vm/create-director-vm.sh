@@ -12,7 +12,7 @@
 
 #sudo firewall-cmd --zone libvirt --add-port 8080/tcp
 
-PYTHON_MAJOR=$(${PYTHON} --version | cut -d' ' -f2 | cut -d. -f1)
+PYTHON_MAJOR=$(${PYTHON} --version 2>&1 | cut -d' ' -f2 | cut -d. -f1)
 
 function start_httpd() {
     local data_dir=$1

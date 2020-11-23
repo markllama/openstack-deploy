@@ -2,6 +2,7 @@ install_tools:
   - bind-utils
   - bridge-utils
   - chrony
+  - epel-release
   - openldap-clients
   - podman-docker
   - python-lxml
@@ -11,3 +12,6 @@ install_tools:
   - tcpdump
   - tmux 
   - traceroute
+
+pip_tools:
+  - jinja2-cli  
