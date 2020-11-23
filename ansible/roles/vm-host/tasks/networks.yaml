@@ -23,12 +23,12 @@
 # enp8s0 - r2p1 00:e0:4c:87:00:57
 # enp9s0 - r2p2 00:e0:4c:87:00:58
 
- - name: Add bridge for IPMI
-   template:
-     src: ifcfg-br-xxx.j2
-     dest: "/etc/sysconfig/network-scripts/ifcfg-br-{{ item.key }}"
-     backup: yes
-    with_dict: bridges
+- name: Add bridge for IPMI
+  template:
+    src: ifcfg-br-xxx.j2
+    dest: "/etc/sysconfig/network-scripts/ifcfg-br-{{ item.key }}"
+    backup: yes
+  with_dict: bridges
     
 - name: Add bridge to IPMI device
   template:
