@@ -31,6 +31,7 @@
     dest: "/etc/sysconfig/network-scripts/ifcfg-br-{{ item.key }}"
     backup: yes
   with_dict: "{{ bridges }}"
+  notify: restart network  
     
 - name: Add bridge devices
   template:
@@ -38,6 +39,7 @@
     dest: "/etc/sysconfig/network-scripts/ifcfg-{{ item.value.device }}"
     backup: yes
   with_dict: "{{ bridges }}"
+  notify: restart network  
     
 #   command:
 #     cmd: nmcli con add type bridge ifname br-ipmi con-name br-ipmi
