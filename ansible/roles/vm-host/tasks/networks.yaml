@@ -18,7 +18,7 @@
     regexp: "^#?Domains="
     line: Domains=lamourine.org
   notify: restart resolved
-  when: ansible_distrbution == 'CentOS' and ansible_distribution_major_version == 8  
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == 8  
 
 # enp4s0 - down 00:e0:4c:67:92:36
 # enp5s0 - r1p2 00:e0:4c:67:92:37
