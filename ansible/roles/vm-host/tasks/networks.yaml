@@ -18,30 +18,48 @@
     line: Domains=lamourine.org
   notify: restart resolved
 
-- name: Add bridge for IPMI
-  command:
-    cmd: nmcli con add type bridge ifname br-ipmi con-name br-ipmi
+# enp4s0 - down 00:e0:4c:67:92:36
+# enp5s0 - r1p2 00:e0:4c:67:92:37
+# enp8s0 - r2p1 00:e0:4c:87:00:57
+# enp9s0 - r2p2 00:e0:4c:87:00:58
 
-- name: Add bridge slave for IPMI
-  command:
-    cmd: nmcli con add type bridge-slave ifname eth3 master br-ipmi
+ - name: Add bridge for IPMI
+   template:
+     src: ifcfg-br-xxx.j2
+     dest: "/etc/sysconfig/network-scripts/ifcfg-br-{{ item.key }}"
+     backup: yes
+    with_dict: bridges
     
-- name: Disable STP on IPMI bridge
-  command:
-    cmd: sudo nmcli con modify br-ipmi bridge.stp no
-
-- name: Set IP address on br-ipmi
-  command:
-    cmd: nmcli connection modify br-ipmi ipv4.addresses '172.16.2.2/24'
-
-- name: Set IP start method
-  command:
-    cmd: nmcli connection modify br-ipmi ipv4.method manual
+- name: Add bridge to IPMI device
+  template:
+    src: ifcfg-xxx.j2
+    dest: "ifcfg-{{ item.value.device }}"
+    backup: yes
+  with_dict: bridges
     
-- name: Bring up the IPMI bridge interface
-  command:
-    cmd: sudo nmcli con up br-ipmi
+#   command:
+#     cmd: nmcli con add type bridge ifname br-ipmi con-name br-ipmi
 
-- name: Delete bridge slave connection
-  command:
-    cmd: nmcli connection delete eth3
+# - name: Add bridge slave for IPMI
+#   command:
+#     cmd: nmcli con add type bridge-slave ifname eth3 master br-ipmi
+    
+# - name: Disable STP on IPMI bridge
+#   command:
+#     cmd: sudo nmcli con modify br-ipmi bridge.stp no
+
+# - name: Set IP address on br-ipmi
+#   command:
+#     cmd: nmcli connection modify br-ipmi ipv4.addresses '172.16.2.2/24'
+
+# - name: Set IP start method
+#   command:
+#     cmd: nmcli connection modify br-ipmi ipv4.method manual
+    
+# - name: Bring up the IPMI bridge interface
+#   command:
+#     cmd: sudo nmcli con up br-ipmi
+
+# - name: Delete bridge slave connection
+#   command:
+#     cmd: nmcli connection delete eth3

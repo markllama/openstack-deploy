@@ -3,6 +3,7 @@ install_tools:
   - nmap
   - traceroute
   - bind-utils
+  - bridge-utils
   - openldap-clients
   - tcpdump
   - strace

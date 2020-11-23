@@ -1,8 +1,8 @@
-DEVICE={{ iface.device }}
-NAME="System {{ iface.device }}"
+DEVICE={{ item.device }}
+NAME="System {{ item.value.device }}"
 TYPE=Ethernet
 ONBOOT=yes
-BRIDGE={{ iface.bridge.name }}
+BRIDGE={{ item.key }}
 BOOTPROTO=none
 IPV6INIT=no
 NM_CONTROLLED=no
