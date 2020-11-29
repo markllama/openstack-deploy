@@ -28,19 +28,19 @@ bridges:
     device: enp9s0
     mac: 00:e0:4c:87:00:58
     ipv4:
-      address: 172.16.2.3
+      address: 172.16.2.2
       prefix: 24
   prov:
     device: enp5s0
     mac: 00:e0:4c:67:92:37
     ipv4:
-      address: 172.16.3.3
+      address: 172.16.3.2
       prefix: 24
   data:
     device: enp8s0
     mac: 00:e0:4c:87:00:57
     ipv4:
-      address: 172.16.4.3
+      address: 172.16.4.2
       prefix: 24
 
 coredns:
