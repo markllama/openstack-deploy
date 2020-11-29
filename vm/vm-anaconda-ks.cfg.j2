@@ -94,6 +94,6 @@ EOF
 chown -R stack:stack  /home/stack/.ssh
 chmod 700 /home/stack/.ssh
 chmod 600 /home/stack/.ssh/authorized_keys
-restorcon -vR /home/stack/.ssh
+restorecon -vR /home/stack/.ssh
 
 %end
