@@ -23,8 +23,8 @@
 # ============================================================================
 # Network interfaces and bridges
 # ============================================================================
-#- include: networks_nmcli.yaml
-- include: networks.yaml
+- include: networks_nmcli.yaml
+  #- include: networks.yaml
 
 # Install and configure libvirt, pools and networks
 - include: libvirt.yaml
