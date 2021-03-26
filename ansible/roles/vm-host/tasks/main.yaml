@@ -32,16 +32,21 @@
   #- include: networks.yaml
 
 # Install and configure libvirt, pools and networks
-- include: libvirt.yaml
+- name: Libvirt Configuration
+  include_tasks: libvirt.yaml
+  tags: libvirt
+  
 
 # Configure DNS for the cluster
 - include: coredns.yaml
+  tags: dns
 
 - name: enable inbound NTP connections
   firewalld:
     zone: public
     service: ntp
     state: enabled
+  tags: firewall
 
 - name: enable chrony listener on prov network
   lineinfile: 
@@ -50,9 +55,11 @@
     state: present
     line: "allow 172.16.3.0/24"
     path: /etc/chrony.conf
- 
+  tags: time
+    
 - name: start chrony service
   service:
     name: chronyd
     state: started
     enabled: yes
+  tags: time

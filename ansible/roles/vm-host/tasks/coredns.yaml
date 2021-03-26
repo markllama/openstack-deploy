@@ -6,6 +6,7 @@
     owner: root
     group: root
     mode: 775
+  tags: dns
 
 - name: create coredns config
   copy:
@@ -18,6 +19,7 @@
         bind 172.16.3.2
         forward . 192.168.1.1
       }
+  tags: dns
 
 - name: open firewall for DNS - (port 53)
   firewalld:
@@ -26,6 +28,7 @@
     permanent: yes
     immediate: yes
     state: enabled
+  tags: dns
 
 - name: start coredns container
   containers.podman.podman_container:
@@ -39,4 +42,5 @@
     ports:
     - 172.16.3.2:53:53
     image: coredns/coredns
+  tags: dns
 
