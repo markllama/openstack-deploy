@@ -5,25 +5,30 @@
   with_first_found:
     - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yaml"
     - "{{ ansible_distribution }}.yaml"
+  tags: tools
   
 # Enable the serial port console and login
-- include: serial_port_console.yaml
+#- include: serial_port_console.yaml
   
 - name: install tools
   yum:
     name: "{{ install_tools }}"
     state: present
+  tags: tools
 
 - name: install pip tools
   pip:
     name: jinja2-cli
     extra_args: --user
     state: present
+  tags: pip
 
 # ============================================================================
 # Network interfaces and bridges
 # ============================================================================
-- include: networks_nmcli.yaml
+- name: Networks with NMCLI
+  include_tasks: networks_nmcli.yaml
+  tags: network
   #- include: networks.yaml
 
 # Install and configure libvirt, pools and networks

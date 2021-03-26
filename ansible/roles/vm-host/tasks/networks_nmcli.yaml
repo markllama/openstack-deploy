@@ -37,6 +37,7 @@
     autoconnect: yes
     ip4: 172.16.2.2/24
     state: present
+  tags: network
 
 # Set the bridge slave
 - name: ipmi bridge-slave ("{{ ipmi_interface }}")
@@ -47,6 +48,7 @@
     master: br-ipmi
     autoconnect: yes
     state: present
+  tags: network
 
 # Remove the regular interface connection
 - name: ipmi remove ("{{ ipmi_interface }}")
@@ -55,6 +57,7 @@
     ifname: "{{ ipmi_interface }}"
     type: ethernet
     state: absent
+  tags: network
 
 
 # Add the Prov network for control plane and provisioning
@@ -66,6 +69,7 @@
     autoconnect: yes
     ip4: 172.16.3.2/24
     state: present
+  tags: network
 
 - name: prov bridge-slave ("{{ prov_interface }}")
   community.general.nmcli:
@@ -75,6 +79,7 @@
     master: br-prov
     autoconnect: yes
     state: present
+  tags: network
 
 # Remove the regular interface connection
 - name: prov remove ("{{ prov_interface }}")
@@ -83,6 +88,7 @@
     ifname: "{{ prov_interface }}"
     type: ethernet
     state: absent
+  tags: network
 
 # # Add the data network for storage and tenant traffic
 - name: data bridge
@@ -93,6 +99,7 @@
     autoconnect: yes
     ip4: 172.16.4.2/24
     state: present
+  tags: network
 
 - name: data bridge-slave ("{{ data_interface }}")
   community.general.nmcli:
@@ -102,6 +109,7 @@
     master: br-data
     autoconnect: yes
     state: present
+  tags: network
 
 # Remove the regular interface connection
 
@@ -111,3 +119,4 @@
     ifname: "{{ data_interface }}"
     type: ethernet
     state: absent
+  tags: network

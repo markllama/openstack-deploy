@@ -1,0 +1,14 @@
+---
+#
+# Openstack undercloud VM network information
+#
+nics:
+  'eno1': '74:46:a0:b4:eb:87' # 192.168.1.100
+  'ens1': '00:e0:4c:87:00:57' # 172.16.4.0/24 - data
+  'ens2': '00:e0:4c:67:92:36' # NO LINK
+  'eth1': '00:e0:4c:67:92:37' # 172.16.3.0/24 = prov
+  'eth3': '00:e0:4c:87:00:58' # 172.16.2.0/24 - ipmi
+
+ipmi_interface: eth3
+prov_interface: eth1
+data_interface: ens1
