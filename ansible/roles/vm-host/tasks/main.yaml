@@ -28,7 +28,7 @@
 # ============================================================================
 - name: Networks with NMCLI
   include_tasks: networks_nmcli.yaml
-  tags: network
+  tags: network,iface_files
   #- include: networks.yaml
 
 # Install and configure libvirt, pools and networks

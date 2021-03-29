@@ -25,19 +25,19 @@ bridges:
       nameserver: 192.168.1.1
     domain: lamourine.org
   ipmi:
-    device: enp9s0
+    device: if-ipmi
     mac: 00:e0:4c:87:00:58
     ipv4:
       address: 172.16.2.2
       prefix: 24
   prov:
-    device: enp5s0
+    device: if-prov
     mac: 00:e0:4c:67:92:37
     ipv4:
       address: 172.16.3.2
       prefix: 24
   data:
-    device: enp8s0
+    device: if-data
     mac: 00:e0:4c:87:00:57
     ipv4:
       address: 172.16.4.2

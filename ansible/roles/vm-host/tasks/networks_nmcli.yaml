@@ -1,122 +1,57 @@
-# Add the external bridge 
-# - name: ext bridge
-#   community.general.nmcli:
-#     conn_name: br-ext
-#     ifname: br-ext
-#     type: bridge
-#     autoconnect: yes
-#     ip4: 192.168.1.100/24
-#     gw4: 192.168.1.1
-#     dns4: 192.168.1.1
-#     dns4_search: lamourine.org
-#     state: present
+---
+#
+# Assign interface names to nics by MAC
+#
+- name: interface device
+  lineinfile:
+    path: "/etc/sysconfig/network-scripts/ifcfg-{{ item.value.device }}"
+    regexp: "^DEVICE="
+    line: "DEVICE={{ item.value.device }}"
+    state: present
+    create: true
+    backup: true
+    mode: 644
+  with_dict: "{{ bridges }}"
+  tags: iface_files
+  notify: restart udevd
 
-# - name: ext bridge-slave ("{{ ext_interface }}")
-#   community.general.nmcli:
-#     conn_name: "br-ext-slave"
-#     ifname: "{{ ext_interface }}"
-#     type: bridge-slave
-#     master: br-ext
-#     autoconnect: yes
-#     state: present
+- name: interface mac address
+  lineinfile:
+    path: "/etc/sysconfig/network-scripts/ifcfg-{{ item.value.device }}"
+    regexp: "^HWADDR="
+    line: "HWADDR={{ item.value.mac }}"
+    mode: 644
+    state: present
+    create: true
+    backup: true
+  with_dict: "{{ bridges }}"
+  tags: iface_files  
+  notify: restart udevd
 
-# - name: ext remove ("{{ ext_interface }}")
-#   community.general.nmcli:
-#     conn_name: "{{ ext_interface }}"
-#     ifname: "{{ ext_interface }}"
-#     type: ethernet
-#     state: absent
-
-
-# Add the IPMI network for control of hardware
-- name: ipmi bridge
+- name: bridges
   community.general.nmcli:
-    conn_name: br-ipmi
-    ifname: br-ipmi
+    conn_name: "br-{{ item.key }}"
+    ifname: "br-{{ item.key }}"
     type: bridge
     autoconnect: yes
-    ip4: 172.16.2.2/24
+    ip4: "{{ item.value.ipv4.address }}/{{ item.value.ipv4.prefix }}"
     state: present
-  tags: network
+  with_dict: "{{ bridges }}"
+  tags: network  
+
 
 # Set the bridge slave
-- name: ipmi bridge-slave ("{{ ipmi_interface }}")
+- name: bridge-slaves
   community.general.nmcli:
-    conn_name: "br-ipmi-slave"
-    ifname: "{{ ipmi_interface }}"
+    conn_name: "{{ item.value.device }}"
+    ifname: "{{ item.value.device }}"
     type: bridge-slave
-    master: br-ipmi
+    master: "br-{{ item.key }}"
     autoconnect: yes
     state: present
+  with_dict: "{{ bridges }}"
   tags: network
 
-# Remove the regular interface connection
-- name: ipmi remove ("{{ ipmi_interface }}")
+- name: devices
   community.general.nmcli:
-    conn_name: "{{ ipmi_interface }}"
-    ifname: "{{ ipmi_interface }}"
-    type: ethernet
-    state: absent
-  tags: network
-
-
-# Add the Prov network for control plane and provisioning
-- name: prov bridge
-  community.general.nmcli:
-    conn_name: br-prov
-    ifname: br-prov
-    type: bridge
-    autoconnect: yes
-    ip4: 172.16.3.2/24
-    state: present
-  tags: network
-
-- name: prov bridge-slave ("{{ prov_interface }}")
-  community.general.nmcli:
-    conn_name: "br-prov-slave"
-    ifname: "{{ prov_interface }}"
-    type: bridge-slave
-    master: br-prov
-    autoconnect: yes
-    state: present
-  tags: network
-
-# Remove the regular interface connection
-- name: prov remove ("{{ prov_interface }}")
-  community.general.nmcli:
-    conn_name: "{{ prov_interface }}"
-    ifname: "{{ prov_interface }}"
-    type: ethernet
-    state: absent
-  tags: network
-
-# # Add the data network for storage and tenant traffic
-- name: data bridge
-  community.general.nmcli:
-    conn_name: br-data
-    ifname: br-data
-    type: bridge
-    autoconnect: yes
-    ip4: 172.16.4.2/24
-    state: present
-  tags: network
-
-- name: data bridge-slave ("{{ data_interface }}")
-  community.general.nmcli:
-    conn_name: "br-data-slave"
-    ifname: "{{ data_interface }}"
-    type: bridge-slave
-    master: br-data
-    autoconnect: yes
-    state: present
-  tags: network
-
-# Remove the regular interface connection
-
-- name: data remove ("{{ data_interface }}")
-  community.general.nmcli:
-    conn_name: "{{ data_interface }}"
-    ifname: "{{ data_interface }}"
-    type: ethernet
-    state: absent
-  tags: network
+    
