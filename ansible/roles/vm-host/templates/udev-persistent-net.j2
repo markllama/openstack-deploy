@@ -4,6 +4,6 @@
 {% for iface in bridges %}
 # PCI device
 SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", \
-  ATTR{address}=="{{ iface.value.mac }}",           \
+  ATTR{address}=="{{ iface.mac }}",           \
   ATTR{type}=="1", NAME="if-{{ iface.key }}"
 {% endfor %}
