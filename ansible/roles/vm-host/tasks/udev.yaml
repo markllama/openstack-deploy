@@ -1,0 +1,13 @@
+#
+# Update the interface names in udev based on interface specs
+#
+- name: Create udev entries to name interfaces
+  template:
+    src: udev-persistent-net.js
+    dest: /etc/udev/rules.d/70-persistent-net.rules
+    owner: root
+    mode: 644
+    backup: true
+  with_dict: "{{ bridges }}"
+  tags: udev
+  
