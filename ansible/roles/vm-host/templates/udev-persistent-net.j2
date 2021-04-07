@@ -1,9 +1,9 @@
 #
 # See if we can rename the alternate interfaces
 #
-{% for iface in bridges %}
+{% for iface in item %}
 # PCI device
 SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", \
-  ATTR{address}=="{{ iface.mac }}",           \
+  ATTR{address}=="{{ iface.value.mac }}",           \
   ATTR{type}=="1", NAME="if-{{ iface.key }}"
 {% endfor %}

@@ -8,5 +8,6 @@
     owner: root
     mode: 644
     backup: true
+  with: "{{ bridges }}"
   tags: udev
   
