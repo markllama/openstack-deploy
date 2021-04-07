@@ -1,7 +1,7 @@
 #
 # See if we can rename the alternate interfaces
 #
-{% for ifname, ifspec in dict_item.items() %}
+{% for ifname, ifspec in item.items() %}
 # PCI device
 SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", \
   ATTR{address}=="{{ ifspec.mac }}",           \
