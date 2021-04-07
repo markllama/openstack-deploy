@@ -8,5 +8,6 @@
     owner: root
     mode: 644
     backup: true
+    with_dict: "{{ bridges }}"
   tags: udev
   
