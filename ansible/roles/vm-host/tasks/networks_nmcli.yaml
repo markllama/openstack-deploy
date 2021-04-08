@@ -22,8 +22,8 @@
     line: "HWADDR={{ item.value.mac }}"
     mode: 644
     state: present
-    create: true
-    backup: true
+    create: false
+    backup: false
   with_dict: "{{ bridges }}"
   tags: iface_files  
   notify: restart udevd
@@ -44,7 +44,7 @@
 - name: bridge-slaves
   community.general.nmcli:
     conn_name: "{{ item.value.device }}"
-    ifname: "{{ item.value.device }}"
+    ifname: "if-{{ item.key }}"
     type: bridge-slave
     master: "br-{{ item.key }}"
     autoconnect: yes

@@ -40,30 +40,3 @@
     backup: yes
   with_dict: "{{ bridges }}"
   notify: restart network  
-    
-#   command:
-#     cmd: nmcli con add type bridge ifname br-ipmi con-name br-ipmi
-
-# - name: Add bridge slave for IPMI
-#   command:
-#     cmd: nmcli con add type bridge-slave ifname eth3 master br-ipmi
-    
-# - name: Disable STP on IPMI bridge
-#   command:
-#     cmd: sudo nmcli con modify br-ipmi bridge.stp no
-
-# - name: Set IP address on br-ipmi
-#   command:
-#     cmd: nmcli connection modify br-ipmi ipv4.addresses '172.16.2.2/24'
-
-# - name: Set IP start method
-#   command:
-#     cmd: nmcli connection modify br-ipmi ipv4.method manual
-    
-# - name: Bring up the IPMI bridge interface
-#   command:
-#     cmd: sudo nmcli con up br-ipmi
-
-# - name: Delete bridge slave connection
-#   command:
-#     cmd: nmcli connection delete eth3

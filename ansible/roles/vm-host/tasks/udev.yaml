@@ -4,10 +4,19 @@
 - name: Create udev entries to name interfaces
   template:
     src: udev-persistent-net.j2
+    # template depends on var 'bridges'
     dest: /etc/udev/rules.d/70-persistent-net.rules
     owner: root
     mode: 644
     backup: true
-    with_dict: "{{ bridges }}"
   tags: udev
   
+#- name: udev - reload rules
+#  shell:
+#    cmd: udevadm control --reload-rules
+#  tags: udev
+  
+#- name: udev - trigger update
+#  shell:
+#    cmd: udevadm trigger
+#  tags: udev
