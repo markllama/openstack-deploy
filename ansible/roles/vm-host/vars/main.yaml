@@ -15,15 +15,15 @@ libvirt_image_dir: /home/libvirt/images
 ##               ens2  # 00:e0:4c:67:92:36  enp4s0
 
 bridges:
-#  ext:
-#    device: eno1
-#    mac: 74:46:a0:b4:eb:87
-#    ipv4:
-#      address: 192.168.1.100
-#      prefix: 24
-#      gateway: 192.168.1.1
-#      nameserver: 192.168.1.1
-#    domain: lamourine.org
+  ext:
+    device: eno1
+    mac: 74:46:a0:b4:eb:87
+    ipv4:
+      address: 192.168.1.100
+      prefix: 24
+      gateway: 192.168.1.1
+      nameserver: 192.168.1.1
+      domain: lamourine.org
   ipmi:
     device: if-ipmi
     mac: 00:e0:4c:87:00:58
