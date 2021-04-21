@@ -47,6 +47,7 @@
     ifname: "if-{{ item.key }}"
     type: bridge-slave
     master: "br-{{ item.key }}"
+    ip4: ""
     autoconnect: yes
     state: present
   with_dict: "{{ bridges }}"
