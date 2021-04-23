@@ -2,31 +2,6 @@
 #
 # Assign interface names to nics by MAC
 #
-#- name: interface device
-#  lineinfile:
-#    path: "/etc/sysconfig/network-scripts/ifcfg-{{ item.value.device }}"
-#    regexp: "^DEVICE="
-#    line: "DEVICE={{ item.value.device }}"
-#    state: present
-#    create: true
-#    backup: true
-#    mode: 644
-#  with_dict: "{{ bridges }}"
-#  tags: iface_files
-#  notify: restart udevd
-
-#- name: interface mac address
-#  lineinfile:
-#    path: "/etc/sysconfig/network-scripts/ifcfg-{{ item.value.device }}"
-#    regexp: "^HWADDR="
-#    line: "HWADDR={{ item.value.mac }}"
-#    mode: 644
-#    state: present
-#    create: false
-#    backup: false
-#  with_dict: "{{ bridges }}"
-#  tags: iface_files  
-#  notify: restart udevd
 
 - name: bridges
   community.general.nmcli:
@@ -44,7 +19,7 @@
 - name: bridge-slaves
   community.general.nmcli:
     conn_name: "{{ item.value.device }}"
-    ifname: "if-{{ item.key }}"
+    ifname: "{{ item.value.device }}"
     type: bridge-slave
     master: "br-{{ item.key }}"
     ip4: ""

@@ -31,8 +31,8 @@
 #  tags: udev
 
 - name: Networks with network files
-#  include_tasks: networks_nmcli.yaml
-  include_tasks: networks.yaml  
+  include_tasks: networks_nmcli.yaml
+#  include_tasks: networks.yaml  
   tags: network,iface_files
 
 # Install and configure libvirt, pools and networks
