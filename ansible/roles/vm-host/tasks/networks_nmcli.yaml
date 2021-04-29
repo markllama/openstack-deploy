@@ -32,6 +32,7 @@
 - name: bridge IP addresses
   community.general.nmcli:
     conn_name: "br-{{ item.key }}"
+    ifname:  "br-{{ item.key }}"
     ip4: "{{ item.value.ipv4.address }}/{{ item.value.ipv4.prefix }}"
     method4: manual
     state: present
