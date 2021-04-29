@@ -20,7 +20,7 @@
   community.general.nmcli:
     conn_name: "{{ item.value.device }}"
     ifname: "{{ item.value.device }}"
-    type: ethernet
+    type: bridge-slave
     master: "br-{{ item.key }}"
     ip4: ""
     method4: manual
