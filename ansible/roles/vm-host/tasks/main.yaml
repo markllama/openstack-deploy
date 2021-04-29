@@ -21,6 +21,7 @@
     name: jinja2-cli
     extra_args: --user
     state: present
+    executable: pip3
   tags: pip
 
 # ============================================================================
@@ -33,7 +34,7 @@
 - name: Networks with network files
   include_tasks: networks_nmcli.yaml
 #  include_tasks: networks.yaml  
-  tags: network,iface_files
+  tags: network
 
 # Install and configure libvirt, pools and networks
 - name: Libvirt Configuration

@@ -10,6 +10,7 @@
     type: bridge
     autoconnect: yes
     ip4: "{{ item.value.ipv4.address }}/{{ item.value.ipv4.prefix }}"
+    method: manual
     state: present
   with_dict: "{{ bridges }}"
   tags: network  
@@ -20,9 +21,10 @@
   community.general.nmcli:
     conn_name: "{{ item.value.device }}"
     ifname: "{{ item.value.device }}"
-    type: bridge-slave
+    type: ethernet
     master: "br-{{ item.key }}"
     ip4: ""
+    method4: manual
     autoconnect: yes
     state: present
   with_dict: "{{ bridges }}"
