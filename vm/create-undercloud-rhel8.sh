@@ -31,7 +31,7 @@ function generate_kickstart_file() {
     local data_dir=$1
     local secrets_file=$2
     
-    jinja2 ${data_dir}/rhel-anaconda-ks.cfg.j2  ${secrets_file} \
+    jinja2 ${data_dir}/rhel8-anaconda-ks.cfg.j2  ${secrets_file} \
            > ${data_dir}/vm-anaconda-ks.cfg
 }
 
@@ -47,15 +47,15 @@ sudo virt-install \
      --sound=none \
      --console pty,target_type=serial  \
      --vcpus=2 \
-     --ram=10240 \
+     --ram=8192 \
      --disk size=100,sparse=no \
      --extra-args "console=ttyS0 ip=192.168.1.81::192.168.1.1:255.255.255.0:director.lab.lamourine.org:eth0:none ks=http://192.168.1.100:${KS_PORT}/vm-anaconda-ks.cfg" \
      --os-type=linux \
      --os-variant=rhel${RHEL_VERSION} \
-     --location=/home/libvirt/images/rhel-server-${RHEL_VERSION}-x86_64-dvd.iso \
-     --network bridge:br-ext \
-     --network bridge:br-ipmi \
-     --network bridge:br-prov \
-     --network bridge:br-data
+     --location=/home/libvirt/images/rhel-${RHEL_VERSION}-x86_64-dvd.iso \
+     --network host
+#     --network bridge:br-ipmi \
+#     --network bridge:br-prov \
+#     --network bridge:br-data
 
 rm ${DATA_DIR}/vm-anaconda-ks.cfg

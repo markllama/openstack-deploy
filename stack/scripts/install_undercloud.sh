@@ -33,7 +33,7 @@ function main() {
         echo ERROR: no undercloud.conf is present. Exiting
         return 1
     fi
-#    openstack undercloud install
+    openstack undercloud install
 
     source ~/stackrc
     openstack subnet set \
