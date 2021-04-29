@@ -10,7 +10,7 @@
     type: bridge
     autoconnect: yes
     ip4: "{{ item.value.ipv4.address }}/{{ item.value.ipv4.prefix }}"
-    method: manual
+    method4: manual
     state: present
   with_dict: "{{ bridges }}"
   tags: network  
