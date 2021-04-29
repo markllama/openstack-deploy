@@ -35,6 +35,7 @@
     ip4: "{{ item.value.ipv4.address }}/{{ item.value.ipv4.prefix }}"
     method4: manual
     state: present
+    autoconnect: yes
   with_dict: "{{ bridges }}"
   when: item.value.ipv4 is defined
   tags: network
