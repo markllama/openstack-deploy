@@ -9,11 +9,10 @@
     ifname: "br-{{ item.key }}"
     type: bridge
     autoconnect: yes
-    ip4: "{{ item.value.ipv4.address }}/{{ item.value.ipv4.prefix }}"
     method4: manual
     state: present
-  with_dict: "{{ bridges }}"
-  tags: network  
+    with_dict: "{{ bridges }}"
+  tags: network
 
 
 # Set the bridge slave
@@ -29,3 +28,14 @@
     state: present
   with_dict: "{{ bridges }}"
   tags: network
+
+- name: bridge IP addresses
+  community.general.nmcli:
+    conn_name: "br-{{ item.key }}"
+    ip4: "{{ item.value.ipv4.address }}/{{ item.value.ipv4.prefix }}"
+    method4: manual
+    state: present
+    with_dict: "{{ bridges }}"
+    when: item.value.ipv4 is defined
+  tags: network
+    
