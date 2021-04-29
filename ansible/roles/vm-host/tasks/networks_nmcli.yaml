@@ -11,7 +11,7 @@
     autoconnect: yes
     method4: manual
     state: present
-    with_dict: "{{ bridges }}"
+  with_dict: "{{ bridges }}"
   tags: network
 
 
