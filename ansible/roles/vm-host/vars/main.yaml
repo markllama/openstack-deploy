@@ -1,6 +1,6 @@
 ---
-serial_port_number: 0
-serial_port_name: ttyS0
+serial_port_number: 1
+serial_port_name: ttyS1
 grub_config_file: /etc/default/grub
 grub_boot_file: /boot/grub2/grub.cfg
 

@@ -16,13 +16,13 @@ reboot
 
 # Network information
 network  --bootproto=static --device=enp1s0 --gateway=192.168.1.1 --ip=192.168.1.81 --nameserver=192.168.1.1 --netmask=255.255.255.0 --noipv6 --activate
-#network  --bootproto=static --device=enp2s0 --ip=172.16.2.3 --netmask=255.255.255.0 --noipv6 --activate
-#network  --bootproto=dhcp --device=enp3s0 --onboot=off --ipv6=auto
-#network  --bootproto=dhcp --device=enp4s0 --onboot=off --ipv6=auto
-#network  --hostname=director.lab.lamourine.org
+network  --bootproto=static --device=enp2s0 --ip=172.16.2.3 --netmask=255.255.255.0 --noipv6 --activate
+network  --bootproto=dhcp --device=enp3s0 --onboot=off --ipv6=auto
+network  --bootproto=dhcp --device=enp4s0 --onboot=off --ipv6=auto
+network  --hostname=director.lab.lamourine.org
 
-#repo --name="Server-HighAvailability" --baseurl=file:///run/install/repo/addons/HighAvailability
-#repo --name="Server-ResilientStorage" --baseurl=file:///run/install/repo/addons/ResilientStorage
+repo --name="Server-HighAvailability" --baseurl=file:///run/install/repo/addons/HighAvailability
+repo --name="Server-ResilientStorage" --baseurl=file:///run/install/repo/addons/ResilientStorage
 # Root password - SENSITIVE
 rootpw {{ vm.root.password }}
 
@@ -33,7 +33,7 @@ skipx
 # System timezone
 timezone Etc/UTC --isUtc
 # SENSITIVE
-#user --groups=wheel --name=stack --password={{ vm.stack.password }} --gecos="Stack User"
+user --groups=wheel --name=stack --password={{ vm.stack.password }} --gecos="Stack User"
 
 # System bootloader configuration
 bootloader --append=" crashkernel=auto" --location=mbr --boot-drive=vda
@@ -58,42 +58,44 @@ pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
 pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 %end
 
-#%post
+%post --log /root/post.log
+
 # SENSITIVE
-#subscription-manager register --username {{ sm.username }} --password {{ sm.password }}
+subscription-manager register --username {{ sm.username }} --password {{ sm.password }}
 # SENSITIVE
-#subscription-manager attach --pool {{ sm.poolid }}
+subscription-manager attach --pool {{ sm.poolid }}
 
-#subscription-manager repos --disable=*
-# subscription-manager repos \
-#   --enable=rhel-7-server-rpms \
-#   --enable=rhel-7-server-extras-rpms \
-#   --enable=rhel-7-server-rh-common-rpms \
-#   --enable=rhel-ha-for-rhel-7-server-rpms \
-#   --enable=rhel-7-server-openstack-13-rpms \
-#   --enable=rhel-7-server-rhceph-3-tools-rpms
+subscription-manager repos --disable=*
+ subscription-manager repos \
+   --enable=rhel-7-server-rpms \
+   --enable=rhel-7-server-extras-rpms \
+   --enable=rhel-7-server-rh-common-rpms \
+   --enable=rhel-ha-for-rhel-7-server-rpms \
+   --enable=rhel-7-server-openstack-13-rpms \
+   --enable=rhel-7-server-rhceph-3-tools-rpms
 
-#yum -y update
+yum -y update
 
-#yum install -y tmux tcpdump traceroute bind-utils nmap strace
+yum install -y tmux tcpdump traceroute bind-utils nmap strace
 
 # yum install -y python-tripleoclient ceph-ansible
 
-# cat <<EOF > /etc/sudoers.d/stack
-# stack ALL=(ALL) NOPASSWD: ALL
-# EOF
+cat <<EOF > /etc/sudoers.d/stack
+ stack ALL=(ALL) NOPASSWD: ALL
+ EOF
 
-# mkdir -p /home/stack/.ssh
+ mkdir -p /home/stack/.ssh
 
 # # Public keys: not sensitive
-# cat <<EOF > /home/stack/.ssh/authorized_keys
-# ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7aueOFR9P4YgBfokHVS+ttOdsEQnWF5jpz8fFuJcz88fObws/H6Nbslk0FHw6Ki2S99Ld8EUpVqk6zR1jxkP6YjLpMv0WtZAMPYv2Hqg8N5yK8LuQwdgN6om1HXobN+NEB+CPUyisfXNuYhy6NligqBfJXCbzqrSCKU19LI/3aHSBoKuLuhSASB/bS1X9XbEg5GSqZ27nkeAVbk2q74UPxOEvmdYQyoXvTrFWfTn3KIZJL6rkAh0S0OBZEZwNhlzDlP+sj84w8eflMz5id+GrN2BxZboOTPl/pMknnIjTO1YJUCulnOQGmbFfwNr3Wfs6Kiiqm/eSqr9WMrg0cxvCX48bpmkbQGYkWLuUDI/pgdK19AsU2b17jfsrTI/2cg5dg0brGKOih5OKokwD6E0Cz4+DL2VX6sgv61CQHga/TP5Jy0FV+/PxS31kYJP1249vkRpZOq9S6swGxamOOqDe3h2Uf5t5d/tgqcW9NAKoDDQMfM/46ON8kNoWXXHUzj8= mark@lab.lamourine.org
-# ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDpHnYpDgfEaKLe/pvfFMpgoKM3w8mXqUtRPM2GEn0EkqbTprjLPwYBIi5hMNhbfeQU05JUECYM/5OzIsjrNfKEA7vv3+F9Uju8BDnNMXaV00IzYktR8gmUnDujcwWiB+X09XVPikF6kWjrKSZOFXQG/aclSO/fGD8gayxOm5F93Fo+BTjMY2IOxQOFWcpVmmeHMsqcgyFoLHUVr4EU3YjdRwfnxJPyoKf+RqiRRQrXpGamBuJzf0atBr3vHrXcz8adTQW+bgA+6mvSmiryqb97eFh/UO4cc1sz5SCq9bYBXWAvVQ8qrMROiB9yUwvsAvrf6gYG6UlggjpkXA9VMhmp markllama@gmail.com
+cat <<EOF > /home/stack/.ssh/authorized_keys
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7aueOFR9P4YgBfokHVS+ttOdsEQnWF5jpz8fFuJcz88fObws/H6Nbslk0FHw6Ki2S99Ld8EUpVqk6zR1jxkP6YjLpMv0WtZAMPYv2Hqg8N5yK8LuQwdgN6om1HXobN+NEB+CPUyisfXNuYhy6NligqBfJXCbzqrSCKU19LI/3aHSBoKuLuhSASB/bS1X9XbEg5GSqZ27nkeAVbk2q74UPxOEvmdYQyoXvTrFWfTn3KIZJL6rkAh0S0OBZEZwNhlzDlP+sj84w8eflMz5id+GrN2BxZboOTPl/pMknnIjTO1YJUCulnOQGmbFfwNr3Wfs6Kiiqm/eSqr9WMrg0cxvCX48bpmkbQGYkWLuUDI/pgdK19AsU2b17jfsrTI/2cg5dg0brGKOih5OKokwD6E0Cz4+DL2VX6sgv61CQHga/TP5Jy0FV+/PxS31kYJP1249vkRpZOq9S6swGxamOOqDe3h2Uf5t5d/tgqcW9NAKoDDQMfM/46ON8kNoWXXHUzj8= mark@lab.lamourine.org
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDpHnYpDgfEaKLe/pvfFMpgoKM3w8mXqUtRPM2GEn0EkqbTprjLPwYBIi5hMNhbfeQU05JUECYM/5OzIsjrNfKEA7vv3+F9Uju8BDnNMXaV00IzYktR8gmUnDujcwWiB+X09XVPikF6kWjrKSZOFXQG/aclSO/fGD8gayxOm5F93Fo+BTjMY2IOxQOFWcpVmmeHMsqcgyFoLHUVr4EU3YjdRwfnxJPyoKf+RqiRRQrXpGamBuJzf0atBr3vHrXcz8adTQW+bgA+6mvSmiryqb97eFh/UO4cc1sz5SCq9bYBXWAvVQ8qrMROiB9yUwvsAvrf6gYG6UlggjpkXA9VMhmp markllama@gmail.com
 # EOF
 
-# chown -R stack:stack  /home/stack/.ssh
-# chmod 700 /home/stack/.ssh
-# chmod 600 /home/stack/.ssh/authorized_keys
-# restorecon -vR /home/stack/.ssh
+chown -R stack:stack  /home/stack/.ssh
+chmod 700 /home/stack/.ssh
+chmod 600 /home/stack/.ssh/authorized_keys
+restorecon -vR /home/stack/.ssh
 
 # %end

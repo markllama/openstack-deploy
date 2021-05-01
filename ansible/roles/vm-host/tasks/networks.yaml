@@ -13,7 +13,7 @@
     dest: "/etc/sysconfig/network-scripts/ifcfg-br-{{ item.key }}"
     backup: yes
   with_dict: "{{ bridges }}"
-  notify: restart network  
+  notify: restart network
   tags: network
     
 - name: Add bridge devices
@@ -22,5 +22,5 @@
     dest: "/etc/sysconfig/network-scripts/ifcfg-{{ item.value.device }}"
     backup: yes
   with_dict: "{{ bridges }}"
-  notify: restart network 
-  tags: network 
+  notify: restart network  
+  tags: network

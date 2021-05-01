@@ -10,7 +10,7 @@
 : ${VM_NAME=osp-16}
 : ${PYTHON=python3}
 
-sudo firewall-cmd --zone libvirt --add-port 8080/tcp
+sudo firewall-cmd --add-port 8080/tcp
 
 PYTHON_MAJOR=$(${PYTHON} --version 2>&1 | cut -d' ' -f2 | cut -d. -f1)
 
