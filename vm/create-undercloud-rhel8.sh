@@ -49,13 +49,13 @@ sudo virt-install \
      --vcpus=2 \
      --ram=8192 \
      --disk size=100,sparse=no \
-     --extra-args "console=ttyS0 ip=192.168.1.81::192.168.1.1:255.255.255.0:director.lab.lamourine.org:eth0:none ks=http://192.168.1.100:${KS_PORT}/vm-anaconda-ks.cfg" \
+     --extra-args "console=ttyS0 ip=192.168.1.81::192.168.1.1:255.255.255.0:director.lab.lamourine.org:enp1s0:none ks=http://192.168.1.100:${KS_PORT}/vm-anaconda-ks.cfg" \
      --os-type=linux \
      --os-variant=rhel${RHEL_VERSION} \
      --location=/home/libvirt/images/rhel-${RHEL_VERSION}-x86_64-dvd.iso \
-     --network host
-#     --network bridge:br-ipmi \
-#     --network bridge:br-prov \
-#     --network bridge:br-data
+     --network bridge:br-ext \
+     --network bridge:br-ipmi \
+     --network bridge:br-prov \
+     --network bridge:br-data
 
 rm ${DATA_DIR}/vm-anaconda-ks.cfg

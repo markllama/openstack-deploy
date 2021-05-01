@@ -7,7 +7,7 @@ cdrom
 text
 # Run the Setup Agent on first boot
 #firstboot --enable
-ignoredisk --only-use=sda
+ignoredisk --only-use=vda
 # Keyboard layouts
 #keyboard --vckeymap=us --xlayouts=''
 # System language
@@ -36,10 +36,10 @@ timezone Etc/UTC --isUtc
 #user --groups=wheel --name=stack --password={{ vm.stack.password }} --gecos="Stack User"
 
 # System bootloader configuration
-bootloader --append=" crashkernel=auto" --location=mbr --boot-drive=sda
+bootloader --append=" crashkernel=auto" --location=mbr --boot-drive=vda
 autopart --type=lvm
 # Partition clearing information
-clearpart --all --initlabel --drives=sda
+clearpart --all --initlabel --drives=vda
 
 %packages
 @core

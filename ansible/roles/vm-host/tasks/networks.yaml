@@ -2,24 +2,6 @@
 # Network interfaces and bridges
 # ============================================================================
 
-- name: Add resolver to global dns
-  lineinfile:
-    path: /etc/systemd/resolved.conf
-    insertafter: "^[Resolve]"
-    regexp: "^#?DNS="
-    line: DNS=192.168.1.1
-  notify: restart resolved
-  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == 8  
-  
-- name: Add search domains to global dns
-  lineinfile:
-    path: /etc/systemd/resolved.conf
-    insertafter: "^[Resolve]"
-    regexp: "^#?Domains="
-    line: Domains=lamourine.org
-  notify: restart resolved
-  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == 8  
-
 # enp4s0 - down 00:e0:4c:67:92:36
 # enp5s0 - r1p2 00:e0:4c:67:92:37
 # enp8s0 - r2p1 00:e0:4c:87:00:57
@@ -32,6 +14,7 @@
     backup: yes
   with_dict: "{{ bridges }}"
   notify: restart network  
+  tags: network
     
 - name: Add bridge devices
   template:
@@ -39,4 +22,5 @@
     dest: "/etc/sysconfig/network-scripts/ifcfg-{{ item.value.device }}"
     backup: yes
   with_dict: "{{ bridges }}"
-  notify: restart network  
+  notify: restart network 
+  tags: network 
