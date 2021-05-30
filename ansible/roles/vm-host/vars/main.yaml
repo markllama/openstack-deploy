@@ -44,7 +44,7 @@ bridges:
       prefix: 24
 
 coredns:
-  bind: 172.16.3.2
+  bind: "172.16.2.2 172.16.3.2 172.16.4.2"
   forwarders: [ 192.168.1.1 ]
 
 zones:
