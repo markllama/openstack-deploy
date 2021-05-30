@@ -48,13 +48,60 @@ coredns:
   forwarders: [ 192.168.1.1 ]
 
 zones:
+  - domain: ipmi.lab.lamourine.org
+    admin_email: markllama.gmail.com
+    nameservers:
+      - ns1
+    addresses:
+      - name: router
+        address: 172.16.2.1
+      - name: ns1
+        address: 172.16.2.2
+      - name: lab
+        address: 172.16.2.2
+
+      - name: controller1
+        address: 172.16.2.11
+      - name: compute1
+        address: 172.16.2.12
+      - name: compute2
+        address: 172.16.2.13
+
   - domain: prov.lab.lamourine.org
     admin_email: markllama.gmail.com
     nameservers:
       - ns1
     addresses:
+      - name: router
+        address: 172.16.3.1
       - name: ns1
         address: 172.16.3.2
       - name: lab
         address: 172.16.3.2
+
+      - name: controller1
+        address: 172.16.3.51  
+      - name: compute1
+        address: 172.16.3.61  
+      - name: compute2
+        address: 172.16.3.62  
+
+  - domain: data.lab.lamourine.org
+    admin_email: markllama.gmail.com
+    nameservers:
+      - ns1
+    addresses:
+      - name: router
+        address: 172.16.4.1
+      - name: ns1
+        address: 172.16.4.2
+      - name: lab
+        address: 172.16.4.2
+
+      - name: controller1
+        address: 172.16.4.51  
+      - name: compute1
+        address: 172.16.4.61  
+      - name: compute2
+        address: 172.16.4.62  
 #   - domain ...
