@@ -8,6 +8,15 @@
     mode: 775
   tags: dns
 
+- name: create coredns zone directory
+  file:
+    path: /opt/coredns/zones
+    state: directory
+    owner: root
+    group: root
+    mode: 775
+  tags: dns
+
 - name: create coredns config
   copy:
     dest: /opt/coredns/Corefile
@@ -16,11 +25,29 @@
     mode: 644
     content: |
       .:53 {
-        bind 172.16.3.2
+        bind {{ coredns.bind }}
         forward . 192.168.1.1
       }
+      {% for zone in zones %}
+      {{ zone.domain }}.:53 {
+          bind {{ coredns.bind }}
+          file /zones/db.{{ zone.domain }}
+      }
+      {% endfor %}  
   tags: dns
+      
 
+- name: Create DNS zone files
+  template:
+    src: zone.j2
+    dest: "/opt/coredns/zones/db.{{ item.domain }}"
+    owner: root
+    group: root
+    mode: 644
+  loop: "{{ zones }}"
+  tags: dns
+    
+  
 - name: open firewall for DNS - (port 53)
   firewalld:
     zone: public
@@ -39,6 +66,7 @@
     restart_policy: always
     volumes:
     - /opt/coredns/Corefile:/Corefile
+    - /opt/coredns/zones:/zones
     ports:
     - 172.16.3.2:53:53
     image: coredns/coredns
