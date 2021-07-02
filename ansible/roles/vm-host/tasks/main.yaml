@@ -5,6 +5,7 @@
   with_first_found:
     - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yaml"
     - "{{ ansible_distribution }}.yaml"
+  tags: vars
   
 # Enable the serial port console and login
 - include: serial_port_console.yaml
@@ -13,30 +14,43 @@
   yum:
     name: "{{ install_tools }}"
     state: present
+  tags: tools
 
 - name: install pip tools
   pip:
     name: jinja2-cli
     extra_args: --user
     state: present
+    executable: pip3
+  tags: tools
 
 # ============================================================================
 # Network interfaces and bridges
 # ============================================================================
-#- include: networks_nmcli.yaml
-- include: networks.yaml
+#- name: Network udev entries
+#  include_tasks: udev.yaml
+#  tags: udev
+
+- name: Networks with network files
+  include_tasks: networks.yaml  
+  tags: network
 
 # Install and configure libvirt, pools and networks
-- include: libvirt.yaml
+- name: Libvirt Configuration
+  include_tasks: libvirt.yaml
+  tags: libvirt
+  
 
 # Configure DNS for the cluster
 - include: coredns.yaml
+  tags: dns
 
 - name: enable inbound NTP connections
   firewalld:
     zone: public
     service: ntp
     state: enabled
+  tags: firewall
 
 - name: enable chrony listener on prov network
   lineinfile: 
@@ -45,9 +59,11 @@
     state: present
     line: "allow 172.16.3.0/24"
     path: /etc/chrony.conf
- 
+  tags: time
+    
 - name: start chrony service
   service:
     name: chronyd
     state: started
     enabled: yes
+  tags: time

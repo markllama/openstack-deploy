@@ -9,7 +9,7 @@ cat <<EOF > /opt/coredns/Corefile
 }
 EOF
 
-sudo docker run -d --name coredns \
+sudo podman run -d --name coredns \
   --net=host --restart always \
   --volume /opt/coredns/:/root \
   -p 172.16.3.2:53:53 \

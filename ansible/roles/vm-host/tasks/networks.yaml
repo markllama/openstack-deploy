@@ -2,24 +2,6 @@
 # Network interfaces and bridges
 # ============================================================================
 
-- name: Add resolver to global dns
-  lineinfile:
-    path: /etc/systemd/resolved.conf
-    insertafter: "^[Resolve]"
-    regexp: "^#?DNS="
-    line: DNS=192.168.1.1
-  notify: restart resolved
-  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == 8  
-  
-- name: Add search domains to global dns
-  lineinfile:
-    path: /etc/systemd/resolved.conf
-    insertafter: "^[Resolve]"
-    regexp: "^#?Domains="
-    line: Domains=lamourine.org
-  notify: restart resolved
-  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == 8  
-
 # enp4s0 - down 00:e0:4c:67:92:36
 # enp5s0 - r1p2 00:e0:4c:67:92:37
 # enp8s0 - r2p1 00:e0:4c:87:00:57
@@ -31,7 +13,8 @@
     dest: "/etc/sysconfig/network-scripts/ifcfg-br-{{ item.key }}"
     backup: yes
   with_dict: "{{ bridges }}"
-  notify: restart network  
+  notify: restart network
+  tags: network
     
 - name: Add bridge devices
   template:
@@ -40,30 +23,4 @@
     backup: yes
   with_dict: "{{ bridges }}"
   notify: restart network  
-    
-#   command:
-#     cmd: nmcli con add type bridge ifname br-ipmi con-name br-ipmi
-
-# - name: Add bridge slave for IPMI
-#   command:
-#     cmd: nmcli con add type bridge-slave ifname eth3 master br-ipmi
-    
-# - name: Disable STP on IPMI bridge
-#   command:
-#     cmd: sudo nmcli con modify br-ipmi bridge.stp no
-
-# - name: Set IP address on br-ipmi
-#   command:
-#     cmd: nmcli connection modify br-ipmi ipv4.addresses '172.16.2.2/24'
-
-# - name: Set IP start method
-#   command:
-#     cmd: nmcli connection modify br-ipmi ipv4.method manual
-    
-# - name: Bring up the IPMI bridge interface
-#   command:
-#     cmd: sudo nmcli con up br-ipmi
-
-# - name: Delete bridge slave connection
-#   command:
-#     cmd: nmcli connection delete eth3
+  tags: network
