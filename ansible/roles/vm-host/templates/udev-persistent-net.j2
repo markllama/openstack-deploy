@@ -1,0 +1,10 @@
+#
+# See if we can rename the alternate interfaces
+#
+{% for ifname in bridges.keys() %}
+
+# PCI device
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", \
+  ATTR{address}=="{{ bridges[ifname].mac }}",           \
+  ATTR{type}=="1", NAME="if-{{ ifname }}"
+{% endfor %}

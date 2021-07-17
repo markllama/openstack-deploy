@@ -13,12 +13,14 @@
 #      - python-lxml # used by community.libvirt module
       - python3-lxml # used by community.libvirt module
     state: present
+  tags: libvirt
 
 - name: Enable and start libvirtd
   service:
     name: libvirtd
     state: started
     enabled: true
+  tags: libvirt
 
 - name: create libvirt default pool directory
   file:
@@ -27,6 +29,7 @@
     group: root
     mode: 755
     state: directory
+  tags: libvirt
 
 #- name: initialize libvirt default pool
 - name: define libvirt default pool
@@ -46,6 +49,7 @@
          </permissions>
         </target>
       </pool>
+  tags: libvirt
 
 #- name: build libvirt default pool
 #  community.libvirt.virt_pool:
@@ -62,11 +66,13 @@
     name: default
     state: active
     autostart: yes
+  tags: libvirt
 
 - name: autostart libvirt default pool
   community.libvirt.virt_pool:
     name: default
     autostart: yes
+  tags: libvirt
 
 - name: define libvirt default net
   community.libvirt.virt_net:
@@ -89,17 +95,20 @@
           </dhcp>
         </ip>
       </network>
+  tags: libvirt
 
 - name: start libvirt default net
   community.libvirt.virt_net:
     name: default
     state: active
     autostart: yes
+  tags: libvirt
 
 - name: autostart libvirt default net
   community.libvirt.virt_net:
     name: default
     autostart: yes
+  tags: libvirt
 
 #- name: enable IP forwarding
 - name: enable IP forwarding
@@ -109,3 +118,4 @@
     state: present
     sysctl_set: yes
     reload: yes
+  tags: libvirt

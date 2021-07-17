@@ -8,6 +8,10 @@
     name: systemd-resolved
     state: restarted
 
+- name: restart udevd
+  shell:
+    cmd: "udevadm control --reload-rules && udevadm trigger"
+  
 - name: restart network
   service:
     name: network

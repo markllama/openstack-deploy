@@ -1,6 +1,6 @@
 ---
-serial_port_number: 0
-serial_port_name: ttyS0
+serial_port_number: 1
+serial_port_name: ttyS1
 grub_config_file: /etc/default/grub
 grub_boot_file: /boot/grub2/grub.cfg
 
@@ -23,26 +23,85 @@ bridges:
       prefix: 24
       gateway: 192.168.1.1
       nameserver: 192.168.1.1
-    domain: lamourine.org
+      domain: lamourine.org
   ipmi:
-    device: enp9s0
+    device: if-ipmi
     mac: 00:e0:4c:87:00:58
     ipv4:
       address: 172.16.2.2
       prefix: 24
   prov:
-    device: enp5s0
+    device: if-prov
     mac: 00:e0:4c:67:92:37
     ipv4:
       address: 172.16.3.2
       prefix: 24
   data:
-    device: enp8s0
+    device: if-data
     mac: 00:e0:4c:87:00:57
     ipv4:
       address: 172.16.4.2
       prefix: 24
 
 coredns:
-  bind: 172.16.3.2
+  bind: "172.16.2.2 172.16.3.2 172.16.4.2"
   forwarders: [ 192.168.1.1 ]
+
+zones:
+  - domain: ipmi.lab.lamourine.org
+    admin_email: markllama.gmail.com
+    nameservers:
+      - ns1
+    addresses:
+      - name: router
+        address: 172.16.2.1
+      - name: ns1
+        address: 172.16.2.2
+      - name: lab
+        address: 172.16.2.2
+
+      - name: controller1
+        address: 172.16.2.11
+      - name: compute1
+        address: 172.16.2.12
+      - name: compute2
+        address: 172.16.2.13
+
+  - domain: prov.lab.lamourine.org
+    admin_email: markllama.gmail.com
+    nameservers:
+      - ns1
+    addresses:
+      - name: router
+        address: 172.16.3.1
+      - name: ns1
+        address: 172.16.3.2
+      - name: lab
+        address: 172.16.3.2
+
+      - name: controller1
+        address: 172.16.3.51  
+      - name: compute1
+        address: 172.16.3.61  
+      - name: compute2
+        address: 172.16.3.62  
+
+  - domain: data.lab.lamourine.org
+    admin_email: markllama.gmail.com
+    nameservers:
+      - ns1
+    addresses:
+      - name: router
+        address: 172.16.4.1
+      - name: ns1
+        address: 172.16.4.2
+      - name: lab
+        address: 172.16.4.2
+
+      - name: controller1
+        address: 172.16.4.51  
+      - name: compute1
+        address: 172.16.4.61  
+      - name: compute2
+        address: 172.16.4.62  
+#   - domain ...
