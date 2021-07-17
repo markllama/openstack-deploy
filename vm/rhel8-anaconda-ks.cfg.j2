@@ -17,7 +17,7 @@ reboot
 
 # Network information
 network  --bootproto=static --device=enp1s0 --gateway=192.168.1.1 --ip=192.168.1.81 --nameserver=192.168.1.1 --netmask=255.255.255.0 --noipv6 --activate
-#network  --bootproto=static --device=enp2s0 --ip=172.16.2.3 --netmask=255.255.255.0 --noipv6 --activate
+network  --bootproto=static --device=enp2s0 --ip=172.16.2.3 --netmask=255.255.255.0 --noipv6 --activate
 network  --bootproto=dhcp --device=enp3s0 --onboot=off --ipv6=auto
 network  --bootproto=dhcp --device=enp4s0 --onboot=off --ipv6=auto
 network  --hostname=director.lab.lamourine.org
